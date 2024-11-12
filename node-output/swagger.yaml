@@ -1,0 +1,3154 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "RHOMTRIP API",
+    "description" : "Rhomtrip API is an open standard API specification for the in-destination experiences sector of the travel industry. The standard defines agreed-upon schemas, endpoints, and capabilities commonly needed when connecting platforms, resellers, OTAs, and other technologies in tours, activities, and attractions.",
+    "contact" : { },
+    "version" : "1.0.1-oas3"
+  },
+  "servers" : [ {
+    "url" : "https://api.rhomtrip.com"
+  } ],
+  "paths" : {
+    "/products/{id}" : {
+      "get" : {
+        "tags" : [ "Products" ],
+        "summary" : "Get Product by id",
+        "description" : "Get full product details for a single product.",
+        "operationId" : "productbyid",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "product id",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A product object",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const requestOptions = {\n  method: 'GET',\n  headers: {\n    \"Content-Type\": \"application/json\"\n  },\n  redirect: 'follow'\n};\n\nconst response = await fetch('/products/{productId}', requestOptions);\nconst result = await response.json();\nconsole.log(result);\n"
+        } ]
+      }
+    },
+    "/products" : {
+      "get" : {
+        "tags" : [ "Products" ],
+        "summary" : "Get Products",
+        "description" : "Get full product details for all products",
+        "operationId" : "products",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Specifies the page number of the results to retrieve. This parameter is used to paginate the query results, allowing users to navigate between different pages of data.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Specifies the maximum number of results to retrieve per page. This parameter controls how many items will be returned on each page of the response.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 100
+          }
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Defines the field by which to sort the results. This parameter allows users to specify which property of the data will be used to order the list of results.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "PRICE"
+          }
+        }, {
+          "name" : "order",
+          "in" : "query",
+          "description" : "Determines the order in which results are returned. Allowed values are 'Descending' for sorting results in descending order (from highest to lowest), and 'Ascending' for sorting results in ascending order (from lowest to highest).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "DESCENDING"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "An object",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const requestOptions = {\n  method: 'GET',\n  headers: {\n    \"Content-Type\": \"application/json\"\n  },\n  redirect: 'follow'\n};\n\nfetch('/products?page=1&limit=100&sort=PRICE&order=DESCENDING', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/products/search" : {
+      "post" : {
+        "tags" : [ "Products" ],
+        "summary" : "Get Products By Search Criteria",
+        "description" : "Returns a list of filtered, ordered and sorted product summaries for products that match the given search criteria.",
+        "operationId" : "productsSearch",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/products_search_body"
+              },
+              "example" : {
+                "limit" : 100,
+                "sorting" : {
+                  "sort" : "TRAVELER_RATING",
+                  "order" : "ASCENDING"
+                },
+                "capacity" : {
+                  "from" : 1,
+                  "to" : 3
+                },
+                "page" : 1,
+                "countries" : "US",
+                "currency" : "USD",
+                "maxRating" : 5,
+                "minRating" : 2
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "An object",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "description" : "Products that fall within the search/filter criteria",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"order\": \"DESCENDING\",\n  \"limit\": 100,\n  \"page\": 1\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/products/search', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/availability" : {
+      "post" : {
+        "tags" : [ "Availability" ],
+        "summary" : "Availability Check",
+        "description" : "Check real-time availability and pricing for a product depending on the date, pax-mix, start time and/or product option. - Note This service should only be used to determine the availability of a product immediately prior to booking. Bulk operations pertaining to product availability; e.g., generating a calendar of availability for a product, should use the availability schedule endpoints.",
+        "operationId" : "availabilityCheck",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/availability_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Array of Availability",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Availability"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"productId\": \"65981a24d09fc62f079ed751\",\n  \"localDateStart\": \"2024-05-26\",\n  \"startTime\": \"00:00\",\n  \"optionId\": \"DEFAULT\",\n  \"units\": [\n    {\n      \"id\": \"ADULT\",\n      \"quantity\": 1\n    },\n    {\n      \"id\": \"CHILD\",\n      \"quantity\": 0\n    },\n    {\n      \"id\": \"SENIOR\",\n      \"quantity\": 0\n    }\n  ],\n  \"dropoff\": {\n    \"name\": \"dfgdf\",\n    \"latitude\": 55.83372316484121,\n    \"longitude\": -4.442355496093746,\n    \"googlePlaceId\": \"\"\n  }\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/availability', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/availability/calendar" : {
+      "post" : {
+        "tags" : [ "Availability" ],
+        "summary" : "Availability Calendar",
+        "description" : "This endpoint checks the availability of a product within a specified date range. It determines if the product is available each day within the date range, starting at a specific time.",
+        "operationId" : "availabilityCalendar",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/availability_calendar_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Array of Availabilities",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Availability"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"productId\": \"65981a24d09fc62f079ed751\",\n  \"localDateStart\": \"2024-05-26\",\n  \"localDateEnd\": \"2025-04-22\",\n  \"startTime\": \"00:00\",\n  \"optionId\": \"DEFAULT\",\n  \"units\": [\n    {\n      \"id\": \"ADULT\",\n      \"quantity\": 1\n    },\n    {\n      \"id\": \"CHILD\",\n      \"quantity\": 0\n    },\n    {\n      \"id\": \"SENIOR\",\n      \"quantity\": 0\n    }\n  ],\n  \"dropoff\": {\n    \"name\": \"dfgdf\",\n    \"latitude\": 55.83372316484121,\n    \"longitude\": -4.442355496093746,\n    \"googlePlaceId\": \"\"\n  }\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/availability/calendar', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings (Products)" : {
+      "get" : {
+        "tags" : [ "Bookings" ],
+        "summary" : "Get Bookings",
+        "description" : "Get full booking details for all bookings",
+        "operationId" : "bookings",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Specifies the page number of the results to retrieve. This parameter is used to paginate the query results, allowing users to navigate between different pages of data.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Specifies the maximum number of results to retrieve per page. This parameter controls how many items will be returned on each page of the response.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 100
+          }
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Defines the field by which to sort the results. This parameter allows users to specify which property of the data will be used to order the list of results.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "PRICE"
+          }
+        }, {
+          "name" : "order",
+          "in" : "query",
+          "description" : "Determines the order in which results are returned. Allowed values are 'Descending' for sorting results in descending order (from highest to lowest), and 'Ascending' for sorting results in ascending order (from lowest to highest).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "DESCENDING"
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Determines the type of bookings.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "Product"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "An object",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\n\nconst requestOptions = {\n  method: \"GET\",\n  headers: myHeaders,\n  redirect: \"follow\"\n};\n\nfetch('/bookings?page=1&limit=100&sort=CREATED&order=DESCENDING', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Bookings" ],
+        "summary" : "Create booking",
+        "description" : "This endpoint creates a new booking. Before creating the booking, it checks the availability of the requested service. - Note All newly created bookings have a default status of ON_HOLD.",
+        "operationId" : "bookingsCreate",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/bookings Products_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"uuid\": null,\n  \"productId\": \"65981a24d09fc62f079ed751\",\n  \"availabilityId\": \"2024-05-26T00:00:00-05:00\",\n  \"expirationMinutes\": \"580\",\n  \"optionId\": \"DEFAULT\",\n  \"notes\": \"lorem ipsim \"\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings (Transfers)" : {
+      "get" : {
+        "tags" : [ "Bookings (Transfers)" ],
+        "summary" : "Get Bookings",
+        "description" : "Get full booking details for all bookings",
+        "operationId" : "bookingsTransfer",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Specifies the page number of the results to retrieve. This parameter is used to paginate the query results, allowing users to navigate between different pages of data.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Specifies the maximum number of results to retrieve per page. This parameter controls how many items will be returned on each page of the response.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 100
+          }
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Defines the field by which to sort the results. This parameter allows users to specify which property of the data will be used to order the list of results.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "PRICE"
+          }
+        }, {
+          "name" : "order",
+          "in" : "query",
+          "description" : "Determines the order in which results are returned. Allowed values are 'Descending' for sorting results in descending order (from highest to lowest), and 'Ascending' for sorting results in ascending order (from lowest to highest).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "DESCENDING"
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Determines the type of bookings.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "example" : "Transfer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "An object",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\n\nconst requestOptions = {\n  method: \"GET\",\n  headers: myHeaders,\n  redirect: \"follow\"\n};\n\nfetch('/bookings?page=1&limit=100&sort=CREATED&order=DESCENDING', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Bookings (Transfers)" ],
+        "summary" : "Create transfer booking",
+        "description" : "This endpoint creates a new transfer booking. Note All newly created bookings have a default status of ON_HOLD.",
+        "operationId" : "bookingsCreateTransfer",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/bookings Transfers_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BookingTransfer"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"uuid\": null,\n  \"transferId\": \"66fea92a0d31eeda7cff116a\",\n  \"expirationMinutes\": \"580\",\n  \"optionId\": \"08167870-f83f-430e-90e1-2623ae6fbc36\",\n  \"notes\": \"lorem ipsim \"\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings/{id}/confirm (Transfers)" : {
+      "post" : {
+        "tags" : [ "Bookings (Transfers)" ],
+        "summary" : "Booking Transfers Confirmation",
+        "description" : "This endpoint confirms the booking so it's ready to be used.",
+        "operationId" : "bookingConfirm",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/id_confirm Transfers_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BookingTransfer"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"resellerReference\": \"u7ut5rr\",\n  \"emailReceipt\": \"john@email.com\",\n  \"contact\": {\n    \"fullName\": \"John Doe\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"emailAddress\": \"user@email.com\",\n    \"phoneNumber\": \"1111111111\",\n    \"postalCode\": 2323,\n    \"country\": \"US\",\n    \"notes\": \"Lorem ipsum\"\n  }\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/confirm', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings/{id} (Transfers)" : {
+      "get" : {
+        "tags" : [ "Bookings (Transfers)" ],
+        "summary" : "Get Booking",
+        "description" : "Get the details of an existing booking.",
+        "operationId" : "bookingbyidTransfer",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Object of bookingTransfer",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BookingTransfer"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\n\nconst requestOptions = {\n  method: \"GET\",\n  headers: myHeaders,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "Bookings (Transfers)" ],
+        "summary" : "Booking Update",
+        "description" : "Updates a booking before and after it has been confirmed as long as it hasn't been redeemed or within the cancellation cutoff window. To know if the booking can be updated check the booking's cancellable field. If the booking can be cancelled, it can also be updated. It's generally preferred to update a booking rather than cancelling it and rebooking.",
+        "operationId" : "bookingTransferUpdate",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/bookings_id Transfers_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BookingTransfer"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"resellerReference\": \"asda343\",\n  \"emailReceipt\": \"user@email.com\",\n  \"transferId\": \"66fea92a0d31eeda7cff116a\",\n  \"optionId\": \"08167870-f83f-430e-90e1-2623ae6fbc36\",\n  \"expirationMinutes\": 344,\n  \"contact\": {\n    \"fullName\": \"John Doe\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"emailAddress\": \"user@email.com\",\n    \"phoneNumber\": \"345345355345\",\n    \"postalCode\": 2323,\n    \"country\": \"US\",\n    \"notes\": \"Lorem ipsum\"\n  }\n});\n\nconst requestOptions = {\n  method: \"PATCH\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings/{id}/cancel (Transfers)" : {
+      "post" : {
+        "tags" : [ "Bookings (Transfers)" ],
+        "summary" : "Booking Cancellation",
+        "description" : "For cancelling bookings. - Note You can only cancel a booking if booking.cancellable is TRUE, and is within the booking cancellation cut-off window.",
+        "operationId" : "bookingTransferCancel",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/id_cancel Transfers_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BookingTransfer"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"reason\": \"Lorem ipsum\"\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/cancel', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings/{id}/extend (Transfers)" : {
+      "post" : {
+        "tags" : [ "Bookings (Transfers)" ],
+        "summary" : "Extend Reservation",
+        "description" : "Use this endpoint to hold the availability for a booking longer if the status is ON_HOLD.",
+        "operationId" : "bookingTransferExtend",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/id_extend Transfers_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BookingTransfer"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"expirationMinutes\": 200\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/extend', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings/{id}/confirm (Products)" : {
+      "post" : {
+        "tags" : [ "Bookings" ],
+        "summary" : "Booking Confirmation",
+        "description" : "This endpoint confirms the booking so it's ready to be used.",
+        "operationId" : "bookingTransferConfirm",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/id_confirm Products_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"resellerReference\": \"u7ut5rr\",\n  \"emailReceipt\": \"john@email.com\",\n  \"contact\": {\n    \"fullName\": \"John Doe\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"emailAddress\": \"user@email.com\",\n    \"phoneNumber\": \"1111111111\",\n    \"postalCode\": 2323,\n    \"country\": \"US\",\n    \"notes\": \"Lorem ipsum\"\n  }\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/confirm', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings/{id} (Products)" : {
+      "get" : {
+        "tags" : [ "Bookings" ],
+        "summary" : "Get Booking",
+        "description" : "Get the details of an existing booking.",
+        "operationId" : "bookingbyid",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\n\nconst requestOptions = {\n  method: \"GET\",\n  headers: myHeaders,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      },
+      "patch" : {
+        "tags" : [ "Bookings" ],
+        "summary" : "Booking Update",
+        "description" : "Updates a booking before and after it has been confirmed as long as it hasn''t been redeemed or within the cancellation cutoff window. To know if the booking can be updated check the booking''s cancellable field. If the booking can be cancelled, it can also be updated. It''s generally preferred to update a booking rather than cancelling it and rebooking.",
+        "operationId" : "bookingUpdate",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/bookings_id Products_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"resellerReference\": \"asda343\",\n  \"emailReceipt\": \"user@email.com\",\n  \"productId\": \"65981a24d09fc62f079ed751\",\n  \"optionId\": \"DEFAULT\",\n  \"availabilityId\": \"2024-05-26T00:00:00-05:00\",\n  \"expirationMinutes\": 344,\n  \"contact\": {\n    \"fullName\": \"John Doe\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"emailAddress\": \"user@email.com\",\n    \"phoneNumber\": \"345345355345\",\n    \"postalCode\": 2323,\n    \"country\": \"US\",\n    \"notes\": \"Lorem ipsum\"\n  }\n});\n\nconst requestOptions = {\n  method: \"PATCH\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings/{id}/cancel (Products)" : {
+      "post" : {
+        "tags" : [ "Bookings" ],
+        "summary" : "Booking Cancellation",
+        "description" : "For cancelling bookings. - Note You can only cancel a booking if booking.cancellable is TRUE, and is within the booking cancellation cut-off window.",
+        "operationId" : "bookingCancel",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/id_cancel Products_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"reason\": \"Lorem ipsum\"\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/cancel', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/bookings/{id}/extend (Products)" : {
+      "post" : {
+        "tags" : [ "Bookings" ],
+        "summary" : "Extend Reservation",
+        "description" : "Use this endpoint to hold the availability for a booking longer if the status is ON_HOLD.",
+        "operationId" : "bookingExtend",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The booking id.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/id_extend Products_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Object of booking",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : false,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"expirationMinutes\": 200\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/bookings/extend', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    },
+    "/transfers" : {
+      "post" : {
+        "tags" : [ "Transfer Quotation" ],
+        "summary" : "Transfer Quotation",
+        "description" : "This endpoint provides a quotation for a transfer service between two specified locations, based on transfer details such as pick-up, drop-off, type of transfer, and passenger information.",
+        "operationId" : "getTransferQuote",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/transfers_body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Transfer quotation successfully returned",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TransferFullResponse"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "x-hideTryItPanel" : true,
+        "x-codeSamples" : [ {
+          "lang" : "javascript",
+          "label" : "JS",
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"pickUp\": {\n    \"name\": \"International Airport\",\n    \"googlePlaceId\": \"ChIJN1t_tDeuEmsRUsoyG83frY4\",\n    \"latitude\": -33.8688,\n    \"longitude\": 151.2093,\n    \"country\": \"IT\"\n  },\n  \"dropOff\": {\n    \"name\": \"Hotel\",\n    \"googlePlaceId\": \"ChIJN1t_tDeuEmsRUsoyG83frY4\",\n    \"latitude\": -33.9258,\n    \"longitude\": 151.2456,\n    \"country\": \"IT\"\n  },\n  \"transferType\": \"ARRIVAL\",\n  \"routeReference\": \"QF400\",\n  \"startTime\": \"14:30\",\n  \"localDateStart\": \"2024-09-17\",\n  \"units\": [\n    {\n      \"id\": \"ADULT\",\n      \"quantity\": 2\n    }\n  ]\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/transfers', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+        } ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "AvailabilityCheck" : {
+        "type" : "object",
+        "properties" : {
+          "dropoff" : {
+            "$ref" : "#/components/schemas/AvailabilityCheck_dropoff"
+          },
+          "localDateStart" : {
+            "type" : "string",
+            "example" : "2025-12-17"
+          },
+          "optionId" : {
+            "type" : "string",
+            "example" : "DEFAULT"
+          },
+          "units" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/AvailabilityCheck_units"
+            }
+          },
+          "productId" : {
+            "type" : "string",
+            "example" : "653a78f3e7a59e6d2693f75b"
+          },
+          "startTime" : {
+            "type" : "string",
+            "example" : "23:00"
+          }
+        }
+      },
+      "AvailabilityCalendar" : {
+        "type" : "object",
+        "properties" : {
+          "dropoff" : {
+            "$ref" : "#/components/schemas/AvailabilityCheck_dropoff"
+          },
+          "localDateEnd" : {
+            "type" : "string",
+            "example" : "2025-04-20"
+          },
+          "localDateStart" : {
+            "type" : "string",
+            "example" : "2024-08-15"
+          },
+          "optionId" : {
+            "type" : "string",
+            "example" : "DEFAULT"
+          },
+          "units" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/AvailabilityCheck_units"
+            }
+          },
+          "productId" : {
+            "type" : "string",
+            "example" : "653a78f3e7a59e6d2693f75b"
+          },
+          "startTime" : {
+            "type" : "string",
+            "example" : "00:00"
+          }
+        }
+      },
+      "BookingsCreate" : {
+        "type" : "object",
+        "properties" : {
+          "availabilityId" : {
+            "type" : "string",
+            "example" : "{{AVAILABILITY_ID}}"
+          },
+          "expirationMinutes" : {
+            "type" : "string",
+            "example" : "580"
+          },
+          "notes" : {
+            "type" : "string",
+            "example" : "My notes"
+          },
+          "optionId" : {
+            "type" : "string",
+            "example" : "DEFAULT"
+          },
+          "productId" : {
+            "type" : "string",
+            "example" : "653a78f3e7a59e6d2693f75b"
+          },
+          "uuid" : {
+            "nullable" : true
+          }
+        }
+      },
+      "BookingConfirm" : {
+        "type" : "object",
+        "properties" : {
+          "contact" : {
+            "$ref" : "#/components/schemas/BookingConfirm_contact"
+          },
+          "emailReceipt" : {
+            "type" : "string",
+            "example" : "john@email.com"
+          },
+          "resellerReference" : {
+            "type" : "string",
+            "example" : "u7ut5rr"
+          }
+        }
+      },
+      "BookingUpdate" : {
+        "type" : "object",
+        "properties" : {
+          "availabilityId" : {
+            "type" : "string",
+            "example" : "{{AVAILABILITY_ID}}"
+          },
+          "contact" : {
+            "$ref" : "#/components/schemas/BookingUpdate_contact"
+          },
+          "emailReceipt" : {
+            "type" : "string",
+            "example" : "john@email.com"
+          },
+          "expirationMinutes" : {
+            "type" : "number",
+            "example" : 344
+          },
+          "optionId" : {
+            "type" : "string",
+            "example" : "DEFAULT"
+          },
+          "productId" : {
+            "type" : "string",
+            "example" : "653a78f3e7a59e6d2693f75b"
+          },
+          "resellerReference" : {
+            "type" : "string",
+            "example" : "asda343"
+          }
+        }
+      },
+      "BookingCancel" : {
+        "type" : "object",
+        "properties" : {
+          "reason" : {
+            "type" : "string",
+            "example" : "lorem impsum"
+          }
+        }
+      },
+      "BookingExtend" : {
+        "type" : "object",
+        "properties" : {
+          "expirationMinutes" : {
+            "type" : "number",
+            "example" : 200
+          }
+        }
+      },
+      "ProductsSearch" : {
+        "type" : "object",
+        "properties" : {
+          "limit" : {
+            "type" : "number",
+            "example" : 2
+          },
+          "order" : {
+            "type" : "string",
+            "example" : "DESCENDING"
+          },
+          "page" : {
+            "type" : "number",
+            "example" : 1
+          }
+        }
+      },
+      "Product" : {
+        "required" : [ "cancellationPolicy", "category", "createdAt", "currency", "description", "dropoffRequired", "exclusions", "id", "images", "importantInformation", "inclusions", "internalName", "meetingPoints", "options", "pickupRequired", "productCode", "timeZone", "type", "updatedAt" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Unique identifier for this product",
+            "example" : "66d9cda3026dcae628481e4b"
+          },
+          "internalName" : {
+            "type" : "string",
+            "description" : "Internal name of the product",
+            "example" : "Arrival transfer From Naples to Sorrento with 2 h stops on Pompei"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Detailed description of the product",
+            "example" : "<p><span style=\"color: rgb(0, 0, 0);\">Discover the hidden gems of Naples, Italy with the transfers to Sorrento with a stop on Pompeii! Enjoy the luxury of a private driver and vehicle to take you to the places you want to go, at the time that suits you. Marvel at the stunning views from the top of Mount Vesuvius or explore the ancient ruins of Pompeii, both just a short drive away. Take a stroll through the picturesque streets of the historic center and indulge in delicious local cuisine. Visit the grand Royal Palace, the iconic Castel dell'Ovo, or the vibrant Piazza del Plebiscito. include 2 h. stop on Pompai </span></p>"
+          },
+          "category" : {
+            "type" : "string",
+            "description" : "Category of the product. Possible values are:\n- LUXURY: High-end transfer service offering premium vehicles and amenities\n- STANDARD: Basic transfer service providing standard vehicles and essential amenities\n- BUSINESS: Mid-tier transfer service with business-class vehicles and additional amenities.\n",
+            "example" : "LUXURY"
+          },
+          "currency" : {
+            "type" : "string",
+            "description" : "Currency in which the product is priced, in ISO 4217 format",
+            "example" : "EUR"
+          },
+          "inclusions" : {
+            "type" : "array",
+            "description" : "Features that are included with this product package",
+            "example" : [ "flight tracking", "60-minutes waiting time", "bottle of water", "tolls and taxes", "meet & greet" ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "exclusions" : {
+            "type" : "array",
+            "description" : "Features that are not included with this product package",
+            "example" : [ "food", "drinks", "gratuity" ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "images" : {
+            "type" : "array",
+            "description" : "List of image URLs for the product",
+            "example" : [ "https://upcdn.io/FW25b8h/raw/products/Pmpei3-Epdv.jpg", "https://upcdn.io/FW25b8h/raw/vehicles/gallery/minivan/mercedes-benz/vito/mercedes-benz-minivan-vito-2rDP.jpg", "https://upcdn.io/FW25b8h/raw/vehicles/gallery/minivan/mercedes-benz/vito/mercedes-benz-minivan-vito-75St.jpg", "https://upcdn.io/FW25b8h/raw/products/Pompei2-24fJ.jpeg", "https://upcdn.io/FW25b8h/raw/products/Pompai1-6Gvh.jpeg" ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "cancellationPolicy" : {
+            "type" : "array",
+            "description" : "Cancellation policy details for this product",
+            "example" : [ "To receive a Full Refund, cancellations must be made at least 24 Hours prior to the start time of the experience.", "If you cancel less than 24 Hours before the experience's start time, the amount you paid will not be refunded.", "Changes made less than 24 Hours before the experience's start time will not be accepted." ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "meetingPoints" : {
+            "type" : "array",
+            "description" : "Meeting points information for the product",
+            "example" : [ "Naples Airport arrival hall" ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "createdAt" : {
+            "type" : "string",
+            "description" : "Timestamp (UTC) indicating when this product was originally created",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "description" : "Timestamp (UTC) indicating the most recent occasion of this product's details being modified",
+            "format" : "date-time"
+          },
+          "importantInformation" : {
+            "type" : "string",
+            "description" : "Important information for the product",
+            "example" : "[\"2h stop in Pompi include\",\"tickets is not included\"]"
+          },
+          "timeZone" : {
+            "type" : "string",
+            "description" : "Code for the time zone in which this product operates (IANA TZ database name format)",
+            "example" : "Europe/Rome"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "Type of the product. Possible values are:\n- PRIVATE_TRANSFER: Exclusive transportation service for individual or group transfers\n- TOURS: Organized excursions or trips to various destinations or attractions\n- EVENT: Specific activities or occasions, such as concerts, conferences, or festivals\n- ATTRACTION: Places of interest or activities designed for entertainment, education, or cultural experiences.\n",
+            "example" : "PRIVATE_TRANSFER"
+          },
+          "productCode" : {
+            "type" : "string",
+            "description" : "Product code for the product",
+            "example" : "A28-TR-01155"
+          },
+          "pickupRequired" : {
+            "type" : "boolean",
+            "description" : "Indicates if pickup is required for the product",
+            "example" : true
+          },
+          "dropoffRequired" : {
+            "type" : "boolean",
+            "description" : "Indicates if dropoff is required for the product",
+            "example" : false
+          },
+          "options" : {
+            "type" : "array",
+            "description" : "An array of all options for this product. All products must have at least one option.",
+            "items" : {
+              "$ref" : "#/components/schemas/Option"
+            }
+          }
+        }
+      },
+      "Option" : {
+        "required" : [ "default", "id", "internalName", "reference", "restrictions", "units" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The id that identifies this option, it is only unique within the product.",
+            "example" : "DEFAULT"
+          },
+          "default" : {
+            "type" : "boolean",
+            "description" : "TRUE identifies the option as default, and should therefore rendered and selected first",
+            "example" : true
+          },
+          "internalName" : {
+            "type" : "string",
+            "description" : "Internal name of the product",
+            "example" : "Audi A8 or similar"
+          },
+          "reference" : {
+            "type" : "string",
+            "description" : "An optional code that could be used to identify the product.",
+            "nullable" : true,
+            "example" : "5dca9af9edceaa58fa3e84b3"
+          },
+          "restrictions" : {
+            "$ref" : "#/components/schemas/Option_restrictions"
+          },
+          "units" : {
+            "type" : "array",
+            "description" : "The list of places types (units) available for sale.",
+            "items" : {
+              "type" : "object"
+            }
+          }
+        }
+      },
+      "OptionTransfer" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The id that identifies this transfer option.",
+            "example" : "08167870-f83f-430e-90e1-2623ae6fbc36"
+          },
+          "default" : {
+            "type" : "boolean",
+            "description" : "TRUE identifies the option as default, and should therefore be rendered and selected first.",
+            "example" : false
+          },
+          "internalName" : {
+            "type" : "string",
+            "description" : "Internal name of the vehicle.",
+            "example" : "Opel Insignia"
+          },
+          "reference" : {
+            "type" : "string",
+            "description" : "An optional code that could be used to identify the transfer product.",
+            "nullable" : true,
+            "example" : "5f464f1d92428b3c2a0bdef0"
+          },
+          "restrictions" : {
+            "$ref" : "#/components/schemas/OptionTransfer_restrictions"
+          },
+          "units" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "description" : "The list of available place types (units) for sale."
+            }
+          },
+          "vehicle" : {
+            "$ref" : "#/components/schemas/OptionTransfer_vehicle"
+          },
+          "currency" : {
+            "$ref" : "#/components/schemas/OptionTransfer_currency"
+          },
+          "pricing" : {
+            "$ref" : "#/components/schemas/OptionTransfer_pricing"
+          }
+        }
+      },
+      "Availability" : {
+        "required" : [ "available", "capacity", "id", "localDate", "openingHours", "pricing", "startTime", "status" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The availability id, you'll need this when booking. MUST be a unique identifier within the scope of an option.",
+            "example" : "2024-09-30T14:00:00+00:00"
+          },
+          "openingHours" : {
+            "type" : "array",
+            "description" : "A list of opening hours that the option product is open on this day. If this attribute is empty the option is available all day.",
+            "example" : [ ],
+            "items" : {
+              "$ref" : "#/components/schemas/OpeningHours"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "The status of that date. Possible values are:\n- AVAILABLE: This availability is available for sale\n- FREESALE: This availability has no capacity and is available.\n- SOLD_OUT: There are no more spots available for this date.\n",
+            "example" : "AVAILABLE"
+          },
+          "available" : {
+            "type" : "boolean",
+            "description" : "Whether there is availability for this date.",
+            "example" : true
+          },
+          "capacity" : {
+            "type" : "integer",
+            "description" : "The total capacity on this day.",
+            "example" : 2
+          },
+          "localDate" : {
+            "type" : "string",
+            "description" : "Travel Date on which the product option is available. This will be in the local time zone of the product.",
+            "example" : "2024-09-30"
+          },
+          "startTime" : {
+            "type" : "string",
+            "description" : "Start time of the product option on the specified date (format HH MM)",
+            "example" : "14:00"
+          },
+          "pricing" : {
+            "$ref" : "#/components/schemas/PricingType"
+          }
+        }
+      },
+      "PricingType" : {
+        "required" : [ "basePrice", "fees", "netPrice", "totalPrice" ],
+        "type" : "object",
+        "properties" : {
+          "basePrice" : {
+            "type" : "number",
+            "description" : "Base price of the option product.",
+            "format" : "float",
+            "example" : 47.03
+          },
+          "netPrice" : {
+            "type" : "number",
+            "description" : "Net price of the option product.",
+            "format" : "float",
+            "example" : 69.16
+          },
+          "fees" : {
+            "type" : "array",
+            "description" : "Additional fees applied to the product.",
+            "example" : [ {
+              "name" : "Night Fees",
+              "net" : 15,
+              "description" : "Night Fees"
+            } ],
+            "items" : {
+              "type" : "object"
+            }
+          },
+          "totalPrice" : {
+            "type" : "number",
+            "description" : "Total price of the option product including base price and all additional fees.",
+            "format" : "float",
+            "example" : 84.16
+          }
+        }
+      },
+      "OpeningHours" : {
+        "type" : "object",
+        "properties" : {
+          "from" : {
+            "type" : "string",
+            "description" : "When this product opens (HH:MM)"
+          },
+          "to" : {
+            "type" : "string",
+            "description" : "When this product closes (HH:MM)"
+          }
+        }
+      },
+      "Booking" : {
+        "required" : [ "availability", "availabilityId", "cancellable", "cancellation", "contact", "notes", "option", "optionId", "product", "productId", "status", "utcConfirmedAt", "utcCreatedAt", "utcExpiresAt", "utcRedeemedAt", "utcUpdatedAt", "uuid" ],
+        "type" : "object",
+        "properties" : {
+          "uuid" : {
+            "type" : "string",
+            "description" : "A UUID used as an idempotency key when creating the booking.",
+            "format" : "uuid",
+            "example" : "ecdcef4c-462b-400d-9e0e-d48f8871a985"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "The status of the booking, possible values are:\n- ON_HOLD: The booking is pending confirmation, this is the default value when you first create the booking.\n- EXPIRED: If the booking is not confirmed before the expiration hold expires, it goes into an expired state.\n- CONFIRMED: Once the confirmation call is made the booking is ready to be used.\n- CANCELLED: If the booking is cancelled.\n- PENDING: If the booking is pending outside availability confirmation.\n- REDEEMED: If the booking is already redeemed.\n",
+            "example" : "ON_HOLD"
+          },
+          "utcCreatedAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date time in UTC when the booking was created.",
+            "format" : "date-time"
+          },
+          "utcUpdatedAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date time in UTC when the booking was updated.",
+            "format" : "date-time"
+          },
+          "utcExpiresAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date times in UTC for when this booking is due to expire if the status is ON_HOLD.",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "utcRedeemedAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date time in UTC at when the booking was redeemed.",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "utcConfirmedAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date time in UTC when the booking was confirmed.",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "productId" : {
+            "type" : "string",
+            "description" : "The product id.",
+            "example" : "66d9cda3026dcae628481e4b"
+          },
+          "product" : {
+            "$ref" : "#/components/schemas/Product"
+          },
+          "optionId" : {
+            "type" : "string",
+            "description" : "The option id.",
+            "example" : "DEFAULT"
+          },
+          "option" : {
+            "$ref" : "#/components/schemas/Option"
+          },
+          "cancellable" : {
+            "type" : "boolean",
+            "description" : "A boolean field indicating whether this booking can be cancelled."
+          },
+          "cancellation" : {
+            "$ref" : "#/components/schemas/Booking_cancellation"
+          },
+          "availabilityId" : {
+            "type" : "string",
+            "description" : "The availability id that was used in the request.",
+            "example" : "2024-09-30T14:00:00+00:00"
+          },
+          "availability" : {
+            "$ref" : "#/components/schemas/Availability"
+          },
+          "contact" : {
+            "$ref" : "#/components/schemas/Contact"
+          },
+          "notes" : {
+            "type" : "string",
+            "description" : "Optional notes for the booking.",
+            "nullable" : true,
+            "example" : "Lorem impsun"
+          }
+        }
+      },
+      "BookingTransfer" : {
+        "required" : [ "cancellable", "cancellation", "contact", "notes", "optionId", "status", "transfer", "transferId", "utcConfirmedAt", "utcCreatedAt", "utcExpiresAt", "utcRedeemedAt", "utcUpdatedAt", "uuid" ],
+        "type" : "object",
+        "properties" : {
+          "uuid" : {
+            "type" : "string",
+            "description" : "A UUID used as an idempotency key when creating the booking.",
+            "format" : "uuid",
+            "example" : "d6f414ce-1275-4008-8ccf-399e9ce95197"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "The status of the booking, possible values are:\n- ON_HOLD: The booking is pending confirmation, this is the default value when you first create the booking.\n- EXPIRED: If the booking is not confirmed before the expiration hold expires, it goes into an expired state.\n- CONFIRMED: Once the confirmation call is made the booking is ready to be used.\n- CANCELLED: If the booking is cancelled.\n- PENDING: If the booking is pending outside availability confirmation.\n- REDEEMED: If the booking is already redeemed.\n",
+            "example" : "ON_HOLD"
+          },
+          "utcCreatedAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date time in UTC when the booking was created.",
+            "format" : "date-time",
+            "example" : "2024-11-12T09:51:32.973Z"
+          },
+          "utcUpdatedAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date time in UTC when the booking was updated.",
+            "format" : "date-time",
+            "example" : "2024-11-12T09:51:32.973Z"
+          },
+          "utcExpiresAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date times in UTC for when this booking is due to expire if the status is ON_HOLD.",
+            "format" : "date-time",
+            "nullable" : true,
+            "example" : "2024-11-12T19:31:32.973Z"
+          },
+          "utcRedeemedAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date time in UTC at when the booking was redeemed.",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "utcConfirmedAt" : {
+            "type" : "string",
+            "description" : "An ISO8601 date time in UTC when the booking was confirmed.",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "transferId" : {
+            "type" : "string",
+            "description" : "The transfer id.",
+            "example" : "67331ca43070a6fb19a24443"
+          },
+          "transfer" : {
+            "$ref" : "#/components/schemas/Transfer"
+          },
+          "optionId" : {
+            "type" : "string",
+            "description" : "The option id.",
+            "example" : "bf81d46f-6595-40df-8891-c4cf49889e15"
+          },
+          "cancellable" : {
+            "type" : "boolean",
+            "description" : "A boolean field indicating whether this booking can be cancelled.",
+            "example" : true
+          },
+          "cancellation" : {
+            "$ref" : "#/components/schemas/BookingTransfer_cancellation"
+          },
+          "contact" : {
+            "$ref" : "#/components/schemas/Contact"
+          },
+          "notes" : {
+            "type" : "string",
+            "description" : "Optional notes for the booking.",
+            "nullable" : true,
+            "example" : "Lorem ipsum"
+          }
+        }
+      },
+      "Transfer" : {
+        "required" : [ "distanceInclude", "distanceUnit", "localDateStart", "options", "serviceReference", "startTime", "transferType" ],
+        "type" : "object",
+        "properties" : {
+          "transferType" : {
+            "type" : "string",
+            "description" : "The type of transfer.",
+            "example" : "ARRIVAL",
+            "enum" : [ "ARRIVAL", "DEPARTURE", "STATION", "PORT" ]
+          },
+          "serviceReference" : {
+            "type" : "string",
+            "description" : "Service reference for the transfer.",
+            "example" : "SD3DD"
+          },
+          "startTime" : {
+            "type" : "string",
+            "description" : "Start time of the transfer in HH:mm format.",
+            "format" : "time",
+            "example" : "18:00"
+          },
+          "localDateStart" : {
+            "type" : "string",
+            "description" : "Date of the transfer in YYYY-MM-DD format.",
+            "format" : "date",
+            "example" : "2024-12-19"
+          },
+          "distanceUnit" : {
+            "type" : "string",
+            "description" : "Unit of distance measurement.",
+            "example" : "KM",
+            "enum" : [ "KM", "MILES" ]
+          },
+          "distanceInclude" : {
+            "type" : "number",
+            "description" : "The included distance for the transfer.",
+            "format" : "double",
+            "example" : 18.24
+          },
+          "options" : {
+            "type" : "array",
+            "description" : "List of vehicle options for the transfer.",
+            "items" : {
+              "$ref" : "#/components/schemas/Transfer_options"
+            }
+          }
+        }
+      },
+      "TransferFullResponse" : {
+        "required" : [ "distanceInclude", "distanceUnit", "dropOff", "options", "pickUp" ],
+        "type" : "object",
+        "properties" : {
+          "pickUp" : {
+            "$ref" : "#/components/schemas/TransferFullResponse_pickUp"
+          },
+          "dropOff" : {
+            "$ref" : "#/components/schemas/TransferFullResponse_dropOff"
+          },
+          "distanceUnit" : {
+            "type" : "string",
+            "description" : "Unit of distance (miles or kilometers)",
+            "example" : "KM"
+          },
+          "distanceInclude" : {
+            "type" : "number",
+            "description" : "Distance covered in the quotation",
+            "example" : 18.24
+          },
+          "options" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TransferFullResponse_options"
+            }
+          },
+          "utcCreatedAt" : {
+            "type" : "string",
+            "description" : "UTC timestamp when the quotation was created",
+            "format" : "date-time",
+            "example" : "2024-11-12T09:15:16.981Z"
+          },
+          "utcExpiresAt" : {
+            "type" : "string",
+            "description" : "UTC timestamp when the quotation expires",
+            "format" : "date-time",
+            "example" : "2024-11-15T09:15:16.965Z"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Status of the quotation",
+            "example" : "AVAILABLE"
+          },
+          "id" : {
+            "type" : "string",
+            "description" : "Unique identifier for the quotation",
+            "example" : "67331ca43070a6fb19a24443"
+          }
+        }
+      },
+      "Contact" : {
+        "type" : "object",
+        "properties" : {
+          "fullName" : {
+            "type" : "string",
+            "description" : "The full name of the booking holder. This field should include both the first name and last name of the holder.",
+            "example" : "John Doe"
+          },
+          "firstName" : {
+            "type" : "string",
+            "description" : "The first name of the booking holder.",
+            "example" : "John"
+          },
+          "lastName" : {
+            "type" : "string",
+            "description" : "The last name of the booking holder.",
+            "example" : "Doe"
+          },
+          "emailAddress" : {
+            "type" : "string",
+            "description" : "The email address of the booking holder. This should be a valid email address to facilitate communication.",
+            "example" : "johndoe@email.com"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "The phone number of the booking holder, including the country code if applicable.",
+            "example" : "+1 111 222 333"
+          },
+          "postalCode" : {
+            "type" : "string",
+            "description" : "The postal code of the booking holder. This field can include both standard postal codes and PO Box numbers.",
+            "example" : "80147"
+          },
+          "country" : {
+            "type" : "string",
+            "description" : "The country of residence of the booking holder. This should be an internationally recognized country name.",
+            "example" : "Italy"
+          },
+          "notes" : {
+            "type" : "string",
+            "description" : "Additional notes related to the booking. This field is optional and can include any relevant information provided by the holder.",
+            "example" : "Lorem impsun"
+          }
+        }
+      },
+      "inline_response_200" : {
+        "required" : [ "count", "pageNumber", "pageSize", "products", "totalPages" ],
+        "type" : "object",
+        "properties" : {
+          "totalPages" : {
+            "type" : "number",
+            "description" : "Indicates the total number of pages available based on the page size and total number of results.",
+            "example" : 1
+          },
+          "pageNumber" : {
+            "type" : "number",
+            "description" : "Indicates the current page number in the query results. This value reflects the requested page.",
+            "example" : 1
+          },
+          "pageSize" : {
+            "type" : "number",
+            "description" : "Specifies the number of results displayed per page. This value corresponds to the limit set in the request.",
+            "example" : 1
+          },
+          "count" : {
+            "type" : "number",
+            "description" : "Indicates the total number of available results that match the query. This value shows how many items in total meet the search criteria.",
+            "example" : 1
+          },
+          "products" : {
+            "type" : "array",
+            "description" : "Products that fall within the search/filter criteria",
+            "items" : {
+              "$ref" : "#/components/schemas/Product"
+            }
+          }
+        }
+      },
+      "productssearch_sorting" : {
+        "type" : "object",
+        "properties" : {
+          "sort" : {
+            "type" : "string",
+            "description" : "Specifies the criterion to sort by. Allowed values might include different sorting criteria like 'TRAVELER_RATING'.",
+            "example" : "TRAVELER_RATING"
+          },
+          "order" : {
+            "type" : "string",
+            "description" : "Determines the order in which results are returned. Allowed values are 'Descending' for sorting results in descending order (from highest to lowest), and 'Ascending' for sorting results in ascending order (from lowest to highest).",
+            "example" : "ASCENDING"
+          }
+        }
+      },
+      "productssearch_capacity" : {
+        "type" : "object",
+        "properties" : {
+          "from" : {
+            "type" : "integer",
+            "description" : "Specifies the minimum capacity.",
+            "example" : 1
+          },
+          "to" : {
+            "type" : "integer",
+            "description" : "Specifies the maximum capacity.",
+            "example" : 3
+          }
+        }
+      },
+      "products_search_body" : {
+        "type" : "object",
+        "properties" : {
+          "limit" : {
+            "type" : "number",
+            "description" : "Specifies the maximum number of results to retrieve per page. This parameter controls how many items will be returned on each page of the response.",
+            "example" : 2
+          },
+          "sorting" : {
+            "$ref" : "#/components/schemas/productssearch_sorting"
+          },
+          "capacity" : {
+            "$ref" : "#/components/schemas/productssearch_capacity"
+          },
+          "page" : {
+            "type" : "number",
+            "description" : "Specifies the page number of the results to retrieve. This parameter is used to paginate the query results, allowing users to navigate between different pages of data.",
+            "example" : 1
+          },
+          "countries" : {
+            "type" : "array",
+            "description" : "List of country codes in ISO 3166-1 alpha-2 format where the product is available",
+            "example" : [ "CO" ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "destinations" : {
+            "type" : "array",
+            "description" : "List of internal slugs for cities where the product is available.",
+            "example" : [ "CO" ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "productType" : {
+            "type" : "string",
+            "description" : "Type of the product. Possible values are PRIVATE_TRANSFER Exclusive transportation service for individual or group transfers, TOURS Organized excursions or trips to various destinations or attractions, EVENT Specific activities or occasions, such as concerts, conferences, or festivals and ATTRACTION Places of interest or activities designed for entertainment, education, or cultural experiences",
+            "example" : "PRIVATE_TRANSFER"
+          },
+          "currency" : {
+            "type" : "string",
+            "description" : "Currency in which the product is priced, in ISO 4217 format",
+            "example" : "USD"
+          },
+          "maxRating" : {
+            "type" : "number",
+            "description" : "Maximum rating for the product, typically between 1 and 5",
+            "example" : 5
+          },
+          "minRating" : {
+            "type" : "number",
+            "description" : "Minimum rating for the product, typically between 1 and 5",
+            "example" : 1
+          }
+        }
+      },
+      "availability_pickUp" : {
+        "type" : "object",
+        "properties" : {
+          "googlePlaceId" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "latitude" : {
+            "type" : "number",
+            "example" : 37.08010101
+          },
+          "longitude" : {
+            "type" : "number",
+            "example" : -115.1520004
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Lorem impsum"
+          }
+        },
+        "description" : "Is required if the pickupRequired is TRUE in the product details."
+      },
+      "availability_dropoff" : {
+        "type" : "object",
+        "properties" : {
+          "googlePlaceId" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "latitude" : {
+            "type" : "number",
+            "example" : 37.08010101
+          },
+          "longitude" : {
+            "type" : "number",
+            "example" : -115.1520004
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Lorem impsum"
+          }
+        },
+        "description" : "Is required if the dropOff is TRUE in the product details."
+      },
+      "availability_units" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The unit id.",
+            "example" : "ADULT"
+          },
+          "quantity" : {
+            "type" : "integer",
+            "description" : "The quantity of the unit.",
+            "example" : 1
+          }
+        }
+      },
+      "availability_body" : {
+        "required" : [ "localDateEnd", "localDateStart", "optionId", "productId", "units" ],
+        "type" : "object",
+        "properties" : {
+          "pickUp" : {
+            "$ref" : "#/components/schemas/availability_pickUp"
+          },
+          "dropoff" : {
+            "$ref" : "#/components/schemas/availability_dropoff"
+          },
+          "localDateStart" : {
+            "type" : "string",
+            "description" : "Start date to query for (YYYY-MM-DD)",
+            "example" : "2025-12-17"
+          },
+          "optionId" : {
+            "type" : "string",
+            "description" : "The option id.",
+            "example" : "DEFAULT"
+          },
+          "units" : {
+            "type" : "array",
+            "description" : "A list of units.",
+            "items" : {
+              "$ref" : "#/components/schemas/availability_units"
+            }
+          },
+          "productId" : {
+            "type" : "string",
+            "description" : "The product id.",
+            "example" : "{}"
+          },
+          "startTime" : {
+            "type" : "string",
+            "description" : "This time specifies when to start checking availability in HH:mm format",
+            "example" : "23:00"
+          }
+        },
+        "example" : {
+          "productId" : "66d9cda3026dcae628481e4b",
+          "localDateStart" : "2024-09-30",
+          "startTime" : "14:00",
+          "optionId" : "DEFAULT",
+          "units" : [ {
+            "id" : "ADULT",
+            "quantity" : 1
+          }, {
+            "id" : "CHILD",
+            "quantity" : 1
+          }, {
+            "id" : "SENIOR",
+            "quantity" : 0
+          } ],
+          "dropoff" : {
+            "name" : "Naples International Airport",
+            "latitude" : 40.8846856,
+            "longitude" : 14.2865803
+          }
+        }
+      },
+      "availability_calendar_body" : {
+        "required" : [ "localDateEnd", "localDateStart", "optionId", "productId", "startTime" ],
+        "type" : "object",
+        "properties" : {
+          "pickUp" : {
+            "$ref" : "#/components/schemas/availability_pickUp"
+          },
+          "dropoff" : {
+            "$ref" : "#/components/schemas/availability_dropoff"
+          },
+          "localDateStart" : {
+            "type" : "string",
+            "description" : "Start date to query for (YYYY-MM-DD)",
+            "example" : "2025-12-17"
+          },
+          "localDateEnd" : {
+            "type" : "string",
+            "description" : "End date to query for (YYYY-MM-DD)",
+            "example" : "2025-12-17"
+          },
+          "optionId" : {
+            "type" : "string",
+            "description" : "The option id.",
+            "example" : "DEFAULT"
+          },
+          "units" : {
+            "type" : "array",
+            "description" : "A list of units.",
+            "items" : {
+              "$ref" : "#/components/schemas/availability_units"
+            }
+          },
+          "productId" : {
+            "type" : "string",
+            "description" : "The product id.",
+            "example" : "{}"
+          },
+          "startTime" : {
+            "type" : "string",
+            "description" : "This time specifies when to start checking availability in HH:mm format",
+            "example" : "23:00"
+          }
+        },
+        "example" : {
+          "productId" : "66d9cda3026dcae628481e4b",
+          "localDateStart" : "2024-09-28",
+          "localDateEnd" : "2024-10-28",
+          "startTime" : "14:00",
+          "optionId" : "DEFAULT",
+          "units" : [ {
+            "id" : "ADULT",
+            "quantity" : 1
+          }, {
+            "id" : "CHILD",
+            "quantity" : 1
+          }, {
+            "id" : "SENIOR",
+            "quantity" : 0
+          } ],
+          "dropoff" : {
+            "name" : "Naples International Airport",
+            "latitude" : 40.8846856,
+            "longitude" : 14.2865803
+          }
+        }
+      },
+      "inline_response_200_1" : {
+        "required" : [ "bookings", "count", "pageNumber", "pageSize", "totalPages" ],
+        "type" : "object",
+        "properties" : {
+          "totalPages" : {
+            "type" : "number",
+            "description" : "Indicates the total number of pages available based on the page size and total number of results.",
+            "example" : 1
+          },
+          "pageNumber" : {
+            "type" : "number",
+            "description" : "Indicates the current page number in the query results. This value reflects the requested page.",
+            "example" : 1
+          },
+          "pageSize" : {
+            "type" : "number",
+            "description" : "Specifies the number of results displayed per page. This value corresponds to the limit set in the request.",
+            "example" : 1
+          },
+          "count" : {
+            "type" : "number",
+            "description" : "Indicates the total number of available results that match the query. This value shows how many items in total meet the search criteria.",
+            "example" : 1
+          },
+          "bookings" : {
+            "type" : "array",
+            "description" : "Bookings that fall within the search or filter criteria.",
+            "items" : {
+              "$ref" : "#/components/schemas/Booking"
+            }
+          }
+        }
+      },
+      "bookings Products_body" : {
+        "required" : [ "availabilityId", "expirationMinutes", "optionId", "productId" ],
+        "type" : "object",
+        "properties" : {
+          "availabilityId" : {
+            "type" : "string",
+            "description" : "The availability id for this booking.",
+            "example" : "{{AVAILABILITY_ID}}"
+          },
+          "expirationMinutes" : {
+            "type" : "number",
+            "description" : "This attribute extends the ON_HOLD status of the reserve and its value is represented in minutes (Min 20 - Max 200).",
+            "example" : 200
+          },
+          "notes" : {
+            "type" : "string",
+            "description" : "Optional notes for the booking.",
+            "example" : "My notes"
+          },
+          "optionId" : {
+            "type" : "string",
+            "description" : "The option id for this booking.",
+            "example" : "DEFAULT"
+          },
+          "productId" : {
+            "type" : "string",
+            "description" : "The product id for this booking.",
+            "example" : "{}"
+          },
+          "uuid" : {
+            "description" : "A UUID used as an idempotency key when creating the booking.",
+            "nullable" : true
+          }
+        },
+        "example" : {
+          "productId" : "66d9cda3026dcae628481e4b",
+          "availabilityId" : "2024-09-30T14:00:00+00:00",
+          "expirationMinutes" : 580,
+          "optionId" : "DEFAULT",
+          "notes" : "Create my booking"
+        }
+      },
+      "inline_response_200_2" : {
+        "required" : [ "bookings", "count", "pageNumber", "pageSize", "totalPages" ],
+        "type" : "object",
+        "properties" : {
+          "totalPages" : {
+            "type" : "number",
+            "description" : "Indicates the total number of pages available based on the page size and total number of results.",
+            "example" : 1
+          },
+          "pageNumber" : {
+            "type" : "number",
+            "description" : "Indicates the current page number in the query results. This value reflects the requested page.",
+            "example" : 1
+          },
+          "pageSize" : {
+            "type" : "number",
+            "description" : "Specifies the number of results displayed per page. This value corresponds to the limit set in the request.",
+            "example" : 1
+          },
+          "count" : {
+            "type" : "number",
+            "description" : "Indicates the total number of available results that match the query. This value shows how many items in total meet the search criteria.",
+            "example" : 1
+          },
+          "bookings" : {
+            "type" : "array",
+            "description" : "Bookings that fall within the search or filter criteria.",
+            "items" : {
+              "$ref" : "#/components/schemas/BookingTransfer"
+            }
+          }
+        }
+      },
+      "bookings Transfers_body" : {
+        "required" : [ "expirationMinutes", "optionId", "transferId" ],
+        "type" : "object",
+        "properties" : {
+          "transferId" : {
+            "type" : "string",
+            "description" : "The transferId id for this booking.",
+            "example" : "66fea92a0d31eeda7cff116a"
+          },
+          "expirationMinutes" : {
+            "type" : "number",
+            "description" : "This attribute extends the ON_HOLD status of the reserve and its value is represented in minutes (Min 20 - Max 200).",
+            "example" : 200
+          },
+          "notes" : {
+            "type" : "string",
+            "description" : "Optional notes for the booking.",
+            "example" : "My notes"
+          },
+          "optionId" : {
+            "type" : "string",
+            "description" : "The option id for this booking.",
+            "example" : "08167870-f83f-430e-90e1-2623ae6fbc36"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "The transfer type.",
+            "example" : "TRANSFER"
+          },
+          "uuid" : {
+            "description" : "A UUID used as an idempotency key when creating the booking.",
+            "nullable" : true
+          }
+        },
+        "example" : {
+          "transferId" : "66fea92a0d31eeda7cff116a",
+          "expirationMinutes" : 580,
+          "optionId" : "08167870-f83f-430e-90e1-2623ae6fbc36",
+          "type" : "TRANSFER",
+          "notes" : "Create my transfer booking"
+        }
+      },
+      "bookingsidconfirm Transfers_contact" : {
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "example" : "CO"
+          },
+          "emailAddress" : {
+            "type" : "string",
+            "example" : "user@email.com"
+          },
+          "firstName" : {
+            "type" : "string",
+            "example" : "John"
+          },
+          "fullName" : {
+            "type" : "string",
+            "example" : "John Doe"
+          },
+          "lastName" : {
+            "type" : "string",
+            "example" : "Doe"
+          },
+          "notes" : {
+            "type" : "string",
+            "example" : "My notes"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "example" : "1111111111"
+          },
+          "postalCode" : {
+            "type" : "number",
+            "example" : 2323
+          }
+        },
+        "description" : "Contact details of the main guest who will use the transfer service."
+      },
+      "id_confirm Transfers_body" : {
+        "required" : [ "contact", "emailReceipt", "resellerReference" ],
+        "type" : "object",
+        "properties" : {
+          "contact" : {
+            "$ref" : "#/components/schemas/bookingsidconfirm Transfers_contact"
+          },
+          "emailReceipt" : {
+            "type" : "string",
+            "description" : "Whether you want RhonTrip Cloud to email the guest a copy of their receipt. (defaults to false)",
+            "example" : "john@email.com"
+          },
+          "resellerReference" : {
+            "type" : "string",
+            "description" : "Your reference for this booking. Also known as a Voucher Number.",
+            "example" : "u7ut5rr"
+          }
+        },
+        "example" : {
+          "resellerReference" : "u7ut5rr",
+          "emailReceipt" : "user@email.com",
+          "contact" : {
+            "fullName" : "John Doe",
+            "firstName" : "John",
+            "lastName" : "Doe",
+            "emailAddress" : "johndoe@email.com",
+            "phoneNumber" : "+1 111 222 333",
+            "postalCode" : "80147",
+            "country" : "Italy",
+            "notes" : "Lorem impsun"
+          }
+        }
+      },
+      "bookingsid Transfers_contact" : {
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "example" : "IT"
+          },
+          "emailAddress" : {
+            "type" : "string",
+            "example" : "johndoe@email.com"
+          },
+          "firstName" : {
+            "type" : "string",
+            "example" : "John"
+          },
+          "fullName" : {
+            "type" : "string",
+            "example" : "John Doe"
+          },
+          "lastName" : {
+            "type" : "string",
+            "example" : "Doe"
+          },
+          "notes" : {
+            "type" : "string",
+            "example" : "My notes"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "example" : "+1 111 222 333"
+          },
+          "postalCode" : {
+            "type" : "number",
+            "example" : 7100
+          }
+        },
+        "description" : "Contact details of the main guest who will use the transfer service."
+      },
+      "bookings_id Transfers_body" : {
+        "required" : [ "optionId", "resellerReference", "transferId" ],
+        "type" : "object",
+        "properties" : {
+          "transferId" : {
+            "type" : "string",
+            "description" : "The transferId id for this booking.",
+            "example" : "66fea92a0d31eeda7cff116a"
+          },
+          "contact" : {
+            "$ref" : "#/components/schemas/bookingsid Transfers_contact"
+          },
+          "emailReceipt" : {
+            "type" : "string",
+            "description" : "Whether you want RhonTrip Cloud to email the guest a copy of their receipt. (defaults to false)",
+            "example" : "user@email.com"
+          },
+          "expirationMinutes" : {
+            "type" : "number",
+            "description" : "This attribute extends the ON_HOLD status of the reserve and its value is represented in minutes (Min 20 - Max 200).",
+            "example" : 344
+          },
+          "optionId" : {
+            "type" : "string",
+            "description" : "The option id for this booking.",
+            "example" : "08167870-f83f-430e-90e1-2623ae6fbc36"
+          },
+          "resellerReference" : {
+            "type" : "string",
+            "description" : "Your reference for this booking.",
+            "example" : "asda343"
+          }
+        }
+      },
+      "id_cancel Transfers_body" : {
+        "type" : "object",
+        "properties" : {
+          "reason" : {
+            "type" : "string",
+            "description" : "A text value explaining the reason for the cancellation.",
+            "example" : "Lorem ipsum dolor sit amet"
+          }
+        },
+        "example" : {
+          "reason" : "My reason"
+        }
+      },
+      "id_extend Transfers_body" : {
+        "required" : [ "expirationMinutes" ],
+        "type" : "object",
+        "properties" : {
+          "expirationMinutes" : {
+            "type" : "number",
+            "description" : "This attribute extends the ON_HOLD status of the reserve and its value is represented in minutes (Min 20 - Max 200).",
+            "example" : 200
+          }
+        },
+        "example" : {
+          "expirationMinutes" : 200
+        }
+      },
+      "id_confirm Products_body" : {
+        "required" : [ "contact", "emailReceipt", "resellerReference" ],
+        "type" : "object",
+        "properties" : {
+          "contact" : {
+            "$ref" : "#/components/schemas/bookingsidconfirm Transfers_contact"
+          },
+          "emailReceipt" : {
+            "type" : "string",
+            "description" : "Whether you want RhonTrip Cloud to email the guest a copy of their receipt. (defaults to false)",
+            "example" : "john@email.com"
+          },
+          "resellerReference" : {
+            "type" : "string",
+            "description" : "Your reference for this booking. Also known as a Voucher Number.",
+            "example" : "u7ut5rr"
+          }
+        },
+        "example" : {
+          "resellerReference" : "u7ut5rr",
+          "emailReceipt" : "user@email.com",
+          "contact" : {
+            "fullName" : "John Doe",
+            "firstName" : "John",
+            "lastName" : "Doe",
+            "emailAddress" : "johndoe@email.com",
+            "phoneNumber" : "+1 111 222 333",
+            "postalCode\"" : "80147",
+            "country" : "Italy",
+            "notes" : "Lorem impsun"
+          }
+        }
+      },
+      "bookings_id Products_body" : {
+        "required" : [ "availabilityId", "optionId", "productId", "resellerReference" ],
+        "type" : "object",
+        "properties" : {
+          "availabilityId" : {
+            "type" : "string",
+            "description" : "The availability id for this booking.",
+            "example" : "2024-09-30T14:00:00+00:00"
+          },
+          "contact" : {
+            "$ref" : "#/components/schemas/bookingsid Transfers_contact"
+          },
+          "emailReceipt" : {
+            "type" : "string",
+            "description" : "Whether you want RhonTrip Cloud to email the guest a copy of their receipt. (defaults to false)",
+            "example" : "user@email.com"
+          },
+          "expirationMinutes" : {
+            "type" : "number",
+            "description" : "This attribute extends the ON_HOLD status of the reserve and its value is represented in minutes (Min 20 - Max 200).",
+            "example" : 344
+          },
+          "optionId" : {
+            "type" : "string",
+            "description" : "The option id for this booking.",
+            "example" : "DEFAULT"
+          },
+          "productId" : {
+            "type" : "string",
+            "description" : "The product id for this booking.",
+            "example" : "66d9cda3026dcae628481e4b"
+          },
+          "resellerReference" : {
+            "type" : "string",
+            "description" : "Your reference for this booking.",
+            "example" : "asda343"
+          }
+        }
+      },
+      "id_cancel Products_body" : {
+        "type" : "object",
+        "properties" : {
+          "reason" : {
+            "type" : "string",
+            "description" : "A text value explaining the reason for the cancellation.",
+            "example" : "Lorem ipsum dolor sit amet"
+          }
+        },
+        "example" : {
+          "reason" : "My reason"
+        }
+      },
+      "id_extend Products_body" : {
+        "required" : [ "expirationMinutes" ],
+        "type" : "object",
+        "properties" : {
+          "expirationMinutes" : {
+            "type" : "number",
+            "description" : "This attribute extends the ON_HOLD status of the reserve and its value is represented in minutes (Min 20 - Max 200).",
+            "example" : 200
+          }
+        },
+        "example" : {
+          "expirationMinutes" : 200
+        }
+      },
+      "transfers_pickUp" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the pick-up location",
+            "example" : "Aeropuerto Josep Tarradellas Barcelona-El Prat"
+          },
+          "googlePlaceId" : {
+            "type" : "string",
+            "description" : "Google Places ID for the pick-up location",
+            "nullable" : true
+          },
+          "latitude" : {
+            "type" : "number",
+            "description" : "Latitude of the pick-up location",
+            "example" : 41.2890205
+          },
+          "longitude" : {
+            "type" : "number",
+            "description" : "Longitude of the pick-up location",
+            "example" : 2.0649989
+          },
+          "country" : {
+            "type" : "string",
+            "description" : "Country of the pick-up location in ISO alpha-2 format",
+            "example" : "ES"
+          }
+        }
+      },
+      "transfers_dropOff" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the drop-off location",
+            "example" : "Alexandra Barcelona Hotel, Curio Collection by Hilton"
+          },
+          "googlePlaceId" : {
+            "type" : "string",
+            "description" : "Google Places ID for the drop-off location",
+            "nullable" : true
+          },
+          "latitude" : {
+            "type" : "number",
+            "description" : "Latitude of the drop-off location",
+            "example" : 41.3932199
+          },
+          "longitude" : {
+            "type" : "number",
+            "description" : "Longitude of the drop-off location",
+            "example" : 2.1589192
+          },
+          "country" : {
+            "type" : "string",
+            "description" : "Country of the drop-off location in ISO alpha-2 format",
+            "example" : "ES"
+          }
+        }
+      },
+      "transfers_units" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Unit type identifier (ADULT, CHILD, SENIOR)",
+            "example" : "ADULT"
+          },
+          "quantity" : {
+            "type" : "integer",
+            "description" : "Quantity of this unit type",
+            "example" : 2
+          }
+        }
+      },
+      "transfers_body" : {
+        "type" : "object",
+        "properties" : {
+          "pickUp" : {
+            "$ref" : "#/components/schemas/transfers_pickUp"
+          },
+          "dropOff" : {
+            "$ref" : "#/components/schemas/transfers_dropOff"
+          },
+          "transferType" : {
+            "type" : "string",
+            "description" : "Specifies the type of transfer, with possible values being ARRIVAL, DEPARTURE, STATION, and PORT",
+            "example" : "ARRIVAL"
+          },
+          "routeReference" : {
+            "type" : "string",
+            "description" : "Stores the relevant travel code, which is a flight number, train number, or ship name based on the transfer type",
+            "example" : "SD3DD"
+          },
+          "startTime" : {
+            "type" : "string",
+            "description" : "Specifies the start time of the transfer in HH:mm format (24-hour format)",
+            "example" : "18:00"
+          },
+          "localDateStart" : {
+            "type" : "string",
+            "description" : "Specifies the date of the transfer in YYYY-MM-DD format",
+            "example" : "2024-12-19"
+          },
+          "units" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/transfers_units"
+            }
+          }
+        }
+      },
+      "AvailabilityCheck_dropoff" : {
+        "type" : "object",
+        "properties" : {
+          "googlePlaceId" : {
+            "type" : "string",
+            "example" : ""
+          },
+          "latitude" : {
+            "type" : "number",
+            "example" : 37.08010101
+          },
+          "longitude" : {
+            "type" : "number",
+            "example" : -115.1520004
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "dfgdf"
+          }
+        }
+      },
+      "AvailabilityCheck_units" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "example" : "ADULT"
+          },
+          "quantity" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        }
+      },
+      "BookingConfirm_contact" : {
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "example" : "CO"
+          },
+          "emailAddress" : {
+            "type" : "string",
+            "example" : "user@email.com"
+          },
+          "firstName" : {
+            "type" : "string",
+            "example" : "John"
+          },
+          "fullName" : {
+            "type" : "string",
+            "example" : "John Doe"
+          },
+          "lastName" : {
+            "type" : "string",
+            "example" : "Doe"
+          },
+          "notes" : {
+            "type" : "string",
+            "example" : "My notes 534534543"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "example" : "1111111111"
+          },
+          "postalCode" : {
+            "type" : "number",
+            "example" : 2323
+          }
+        }
+      },
+      "BookingUpdate_contact" : {
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string",
+            "example" : "CO"
+          },
+          "emailAddress" : {
+            "type" : "string",
+            "example" : "user@email.com"
+          },
+          "firstName" : {
+            "type" : "string",
+            "example" : "john"
+          },
+          "fullName" : {
+            "type" : "string",
+            "example" : "John Doe"
+          },
+          "lastName" : {
+            "type" : "string",
+            "example" : "Doe"
+          },
+          "notes" : {
+            "type" : "string",
+            "example" : "My notes"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "example" : "345345355345"
+          },
+          "postalCode" : {
+            "type" : "number",
+            "example" : 2323
+          }
+        }
+      },
+      "Option_restrictions" : {
+        "type" : "object",
+        "properties" : {
+          "minUnits" : {
+            "type" : "integer",
+            "description" : "The minimum number of places that can be purchased."
+          },
+          "maxUnits" : {
+            "type" : "integer",
+            "description" : "The maximum number of places that can be purchased."
+          }
+        },
+        "example" : "{\"minUnits\":0,\"maxUnits\":2}"
+      },
+      "OptionTransfer_restrictions" : {
+        "type" : "object",
+        "properties" : {
+          "minUnits" : {
+            "type" : "integer",
+            "description" : "The minimum number of places that can be purchased."
+          },
+          "maxUnits" : {
+            "type" : "integer",
+            "description" : "The maximum number of places that can be purchased."
+          }
+        },
+        "example" : "{\"minUnits\":1,\"maxUnits\":2}"
+      },
+      "OptionTransfer_vehicle" : {
+        "type" : "object",
+        "properties" : {
+          "seats" : {
+            "type" : "integer",
+            "description" : "The number of seats in the vehicle.",
+            "example" : 2
+          },
+          "suitcases" : {
+            "type" : "integer",
+            "description" : "The number of suitcases the vehicle can accommodate.",
+            "example" : 1
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "The type of vehicle.",
+            "example" : "sedan"
+          },
+          "category" : {
+            "type" : "string",
+            "description" : "The category of the vehicle.",
+            "example" : "luxury"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The name of the vehicle.",
+            "example" : "Opel Insignia"
+          },
+          "image" : {
+            "type" : "string",
+            "description" : "A URL link to an image of the vehicle.",
+            "example" : "https://upcdn.io/FW25b8h/raw/vehicles/opel-insigna-sedan.png"
+          }
+        }
+      },
+      "OptionTransfer_currency" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "The currency code used for pricing.",
+            "example" : "USD"
+          },
+          "symbol" : {
+            "type" : "string",
+            "description" : "The symbol for the currency.",
+            "example" : "$"
+          },
+          "label" : {
+            "type" : "string",
+            "description" : "The label for the currency.",
+            "example" : "US Dollar"
+          }
+        }
+      },
+      "OptionTransfer_pricing" : {
+        "type" : "object",
+        "properties" : {
+          "basePrice" : {
+            "type" : "number",
+            "description" : "The base price of the transfer.",
+            "example" : 641.7
+          },
+          "netPrice" : {
+            "type" : "number",
+            "description" : "The net price of the transfer.",
+            "example" : 641.7
+          },
+          "fees" : {
+            "type" : "array",
+            "description" : "Any additional fees for the transfer.",
+            "items" : {
+              "type" : "object"
+            }
+          },
+          "totalPrice" : {
+            "type" : "number",
+            "description" : "The total price of the transfer.",
+            "example" : 943.68
+          }
+        }
+      },
+      "Booking_cancellation" : {
+        "type" : "object",
+        "properties" : {
+          "refund" : {
+            "type" : "string",
+            "enum" : [ "FULL_REFUND", "PARTIAL_REFUND", "NO_REFUND", "NON_REFUNDABLE", "CHANGES" ]
+          },
+          "reason" : {
+            "type" : "string",
+            "example" : "Lorem impsun"
+          },
+          "utcCancelledAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        },
+        "nullable" : true
+      },
+      "BookingTransfer_cancellation" : {
+        "type" : "object",
+        "properties" : {
+          "refund" : {
+            "type" : "string",
+            "enum" : [ "FULL_REFUND", "PARTIAL_REFUND", "NO_REFUND", "NON_REFUNDABLE", "CHANGES" ]
+          },
+          "reason" : {
+            "type" : "string",
+            "example" : "Lorem ipsum"
+          },
+          "utcCancelledAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        },
+        "nullable" : true
+      },
+      "Transfer_vehicle" : {
+        "type" : "object",
+        "properties" : {
+          "seats" : {
+            "type" : "integer",
+            "description" : "Number of seats in the vehicle.",
+            "example" : 3
+          },
+          "suitcases" : {
+            "type" : "integer",
+            "description" : "Number of suitcases the vehicle can carry.",
+            "example" : 3
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "Type of vehicle (e.g., sedan, van).",
+            "example" : "sedan"
+          },
+          "category" : {
+            "type" : "string",
+            "description" : "Category of the vehicle (e.g., business, luxury).",
+            "example" : "business"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Vehicle model name.",
+            "example" : "Mercedes Benz E Class"
+          },
+          "image" : {
+            "type" : "string",
+            "description" : "URL of the vehicle image.",
+            "format" : "url",
+            "example" : "https://app.rhombuss.com/api/public/services/sedan-mercedes-benz-e-class.png"
+          }
+        }
+      },
+      "Transfer_cancellationPolicy" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "description" : "Type of refund.",
+            "example" : "FULL_REFUND",
+            "enum" : [ "FULL_REFUND", "PARTIAL_REFUND", "NO_REFUND" ]
+          },
+          "cutoffAmount" : {
+            "type" : "integer",
+            "description" : "Cutoff time amount for refund eligibility.",
+            "example" : 48
+          },
+          "cutoffUnit" : {
+            "type" : "string",
+            "description" : "Time unit for cutoff amount.",
+            "example" : "HOURS",
+            "enum" : [ "HOURS", "DAYS" ]
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Description of the refund policy.",
+            "example" : "To receive a Full Refund, cancellations must be made at least 48 Hours prior to the start time of the experience."
+          }
+        }
+      },
+      "Transfer_options" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Unique identifier of the transfer option.",
+            "example" : "bf81d46f-6595-40df-8891-c4cf49889e15"
+          },
+          "reference" : {
+            "type" : "string",
+            "description" : "Reference code of the transfer option.",
+            "example" : "669e946751fd06f319d27c2a"
+          },
+          "vehicle" : {
+            "$ref" : "#/components/schemas/Transfer_vehicle"
+          },
+          "defaultCurrency" : {
+            "type" : "string",
+            "description" : "Default currency for the transfer option.",
+            "example" : "EUR"
+          },
+          "availableCurrencies" : {
+            "type" : "array",
+            "description" : "Available currencies for the transfer option.",
+            "example" : [ "USD", "EUR", "GBP" ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "cancellationPolicy" : {
+            "type" : "array",
+            "description" : "List of cancellation policies for the transfer option.",
+            "items" : {
+              "$ref" : "#/components/schemas/Transfer_cancellationPolicy"
+            }
+          }
+        }
+      },
+      "TransferFullResponse_pickUp" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the pick-up location",
+            "example" : "Aeropuerto Josep Tarradellas Barcelona-El Prat"
+          },
+          "googlePlaceId" : {
+            "type" : "string",
+            "description" : "Google Place ID of the pick-up location",
+            "nullable" : true
+          },
+          "latitude" : {
+            "type" : "number",
+            "description" : "Latitude of the pick-up location",
+            "example" : 41.2890205
+          },
+          "longitude" : {
+            "type" : "number",
+            "description" : "Longitude of the pick-up location",
+            "example" : 2.0649989
+          },
+          "country" : {
+            "type" : "string",
+            "description" : "Country of the pick-up location in format ISO alpha-2",
+            "example" : "ES"
+          }
+        }
+      },
+      "TransferFullResponse_dropOff" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the drop-off location",
+            "example" : "Alexandra Barcelona Hotel, Curio Collection by Hilton"
+          },
+          "googlePlaceId" : {
+            "type" : "string",
+            "description" : "Google Place ID of the drop-off location",
+            "nullable" : true
+          },
+          "latitude" : {
+            "type" : "number",
+            "description" : "Latitude of the drop-off location",
+            "example" : 41.3932199
+          },
+          "longitude" : {
+            "type" : "number",
+            "description" : "Longitude of the drop-off location",
+            "example" : 2.1589192
+          },
+          "country" : {
+            "type" : "string",
+            "description" : "Country of the drop-off location in format ISO alpha-2",
+            "example" : "ES"
+          }
+        }
+      },
+      "TransferFullResponse_vehicle" : {
+        "type" : "object",
+        "properties" : {
+          "seats" : {
+            "type" : "number",
+            "description" : "Number of seats in the vehicle",
+            "example" : 3
+          },
+          "suitcases" : {
+            "type" : "number",
+            "description" : "Number of suitcases the vehicle can accommodate",
+            "example" : 3
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "Type of vehicle",
+            "example" : "sedan"
+          },
+          "category" : {
+            "type" : "string",
+            "description" : "Category of vehicle",
+            "example" : "standard"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the vehicle",
+            "example" : "Skoda Octavia"
+          },
+          "image" : {
+            "type" : "string",
+            "description" : "URL of the vehicle image",
+            "example" : "https://app.rhombuss.com/api/public/services/sedan-skoda-octavia.png"
+          }
+        }
+      },
+      "TransferFullResponse_cancellationPolicy" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "description" : "Type of cancellation policy",
+            "example" : "FULL_REFUND"
+          },
+          "cutoffAmount" : {
+            "type" : "integer",
+            "description" : "Cutoff amount for the cancellation policy",
+            "example" : 24
+          },
+          "cutoffUnit" : {
+            "type" : "string",
+            "description" : "Cutoff unit for the cancellation policy (e.g., HOURS, DAYS)",
+            "example" : "HOURS"
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Description of the cancellation policy",
+            "example" : "For a full refund, you must cancel at least 24 Hours before the experience's start time."
+          }
+        }
+      },
+      "TransferFullResponse_options" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Quote identifier",
+            "example" : "29b38b9b-cbd6-4214-9272-c10393a2d32c"
+          },
+          "reference" : {
+            "type" : "string",
+            "description" : "Unique reference of the transfer option",
+            "example" : "5dfb86d284b03e663dd92364"
+          },
+          "vehicle" : {
+            "$ref" : "#/components/schemas/TransferFullResponse_vehicle"
+          },
+          "defaultCurrency" : {
+            "type" : "string",
+            "description" : "Default currency code",
+            "example" : "EUR"
+          },
+          "availableCurrencies" : {
+            "type" : "array",
+            "description" : "Available currency codes",
+            "example" : [ "USD", "EUR", "GBP" ],
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "cancellationPolicy" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TransferFullResponse_cancellationPolicy"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  },
+  "x-hideTryItPanel" : false,
+  "x-codeSamples" : false
+}
