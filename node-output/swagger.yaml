@@ -301,7 +301,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "PRICE"
+            "example" : "PRICE",
+            "enum" : [ "PRICE", "TRAVELER_RATING", "BEST_SELLERS" ]
           }
         }, {
           "name" : "order",
@@ -312,7 +313,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "DESCENDING"
+            "example" : "DESCENDING",
+            "enum" : [ "ASCENDING", "DESCENDING" ]
           }
         }, {
           "name" : "type",
@@ -323,7 +325,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "Product"
+            "example" : "PRODUCT",
+            "enum" : [ "TRANSFER", "PRODUCT" ]
           }
         } ],
         "responses" : {
@@ -422,7 +425,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "PRICE"
+            "example" : "PRICE",
+            "enum" : [ "PRICE", "TRAVELER_RATING", "BEST_SELLERS" ]
           }
         }, {
           "name" : "order",
@@ -433,7 +437,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "DESCENDING"
+            "example" : "DESCENDING",
+            "enum" : [ "ASCENDING", "DESCENDING" ]
           }
         }, {
           "name" : "type",
@@ -444,7 +449,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "Transfer"
+            "example" : "TRANSFER",
+            "enum" : [ "TRANSFER", "PRODUCT" ]
           }
         } ],
         "responses" : {
@@ -1008,7 +1014,7 @@
         "x-codeSamples" : [ {
           "lang" : "javascript",
           "label" : "JS",
-          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"pickUp\": {\n    \"name\": \"International Airport\",\n    \"googlePlaceId\": \"ChIJN1t_tDeuEmsRUsoyG83frY4\",\n    \"latitude\": -33.8688,\n    \"longitude\": 151.2093,\n    \"country\": \"IT\"\n  },\n  \"dropOff\": {\n    \"name\": \"Hotel\",\n    \"googlePlaceId\": \"ChIJN1t_tDeuEmsRUsoyG83frY4\",\n    \"latitude\": -33.9258,\n    \"longitude\": 151.2456,\n    \"country\": \"IT\"\n  },\n  \"transferType\": \"ARRIVAL\",\n  \"routeReference\": \"QF400\",\n  \"startTime\": \"14:30\",\n  \"localDateStart\": \"2024-09-17\",\n  \"units\": [\n    {\n      \"id\": \"ADULT\",\n      \"quantity\": 2\n    }\n  ]\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/transfers', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
+          "source" : "const myHeaders = new Headers();\nmyHeaders.append(\"Content-Type\", \"application/json\");\n\nconst raw = JSON.stringify({\n  \"pickUp\": {\n    \"name\": \"International Airport\",\n    \"googlePlaceId\": \"ChIJN1t_tDeuEmsRUsoyG83frY4\",\n    \"latitude\": -33.8688,\n    \"longitude\": 151.2093,\n    \"country\": \"IT\"\n  },\n  \"dropOff\": {\n    \"name\": \"Hotel\",\n    \"googlePlaceId\": \"ChIJN1t_tDeuEmsRUsoyG83frY4\",\n    \"latitude\": -33.9258,\n    \"longitude\": 151.2456,\n    \"country\": \"IT\"\n  },\n  \"transferType\": \"ARRIVAL\",\n  \"serviceReference\": \"QF400\",\n  \"startTime\": \"14:30\",\n  \"localDateStart\": \"2024-09-17\",\n  \"units\": [\n    {\n      \"id\": \"ADULT\",\n      \"quantity\": 2\n    }\n  ]\n});\n\nconst requestOptions = {\n  method: \"POST\",\n  headers: myHeaders,\n  body: raw,\n  redirect: \"follow\"\n};\n\nfetch('/transfers', requestOptions)\n  .then((response) => response.text())\n  .then((result) => console.log(result))\n  .catch((error) => console.error(error));\n"
         } ]
       }
     }
@@ -1212,12 +1218,14 @@
           "category" : {
             "type" : "string",
             "description" : "Category of the product. Possible values are:\n- LUXURY: High-end transfer service offering premium vehicles and amenities\n- STANDARD: Basic transfer service providing standard vehicles and essential amenities\n- BUSINESS: Mid-tier transfer service with business-class vehicles and additional amenities.\n",
-            "example" : "LUXURY"
+            "example" : "LUXURY",
+            "enum" : [ "STANDARD", "BUSINESS", "LUXURY" ]
           },
           "currency" : {
             "type" : "string",
             "description" : "Currency in which the product is priced, in ISO 4217 format",
-            "example" : "EUR"
+            "example" : "EUR",
+            "enum" : [ "USD", "EUR", "GBP", "CHF", "DKK", "SEK", "NOK", "ISK", "AED" ]
           },
           "inclusions" : {
             "type" : "array",
@@ -1836,7 +1844,8 @@
           "order" : {
             "type" : "string",
             "description" : "Determines the order in which results are returned. Allowed values are 'Descending' for sorting results in descending order (from highest to lowest), and 'Ascending' for sorting results in ascending order (from lowest to highest).",
-            "example" : "ASCENDING"
+            "example" : "ASCENDING",
+            "enum" : [ "ASCENDING", "DESCENDING" ]
           }
         }
       },
@@ -1898,7 +1907,8 @@
           "currency" : {
             "type" : "string",
             "description" : "Currency in which the product is priced, in ISO 4217 format",
-            "example" : "USD"
+            "example" : "USD",
+            "enum" : [ "USD", "EUR", "GBP", "CHF", "DKK", "SEK", "NOK", "ISK", "AED" ]
           },
           "maxRating" : {
             "type" : "number",
@@ -1962,7 +1972,8 @@
           "id" : {
             "type" : "string",
             "description" : "The unit id.",
-            "example" : "ADULT"
+            "example" : "ADULT",
+            "enum" : [ "ADULT", "CHILD", "SENIOR" ]
           },
           "quantity" : {
             "type" : "integer",
@@ -2232,7 +2243,8 @@
           "type" : {
             "type" : "string",
             "description" : "The transfer type.",
-            "example" : "TRANSFER"
+            "example" : "TRANSFER",
+            "enum" : [ "TRANSFER", "PRODUCT" ]
           },
           "uuid" : {
             "description" : "A UUID used as an idempotency key when creating the booking.",
@@ -2582,7 +2594,8 @@
           "id" : {
             "type" : "string",
             "description" : "Unit type identifier (ADULT, CHILD, SENIOR)",
-            "example" : "ADULT"
+            "example" : "ADULT",
+            "enum" : [ "ADULT", "CHILD", "SENIOR" ]
           },
           "quantity" : {
             "type" : "integer",
@@ -2603,12 +2616,8 @@
           "transferType" : {
             "type" : "string",
             "description" : "Specifies the type of transfer, with possible values being ARRIVAL, DEPARTURE, STATION, and PORT",
-            "example" : "ARRIVAL"
-          },
-          "routeReference" : {
-            "type" : "string",
-            "description" : "Stores the relevant travel code, which is a flight number, train number, or ship name based on the transfer type",
-            "example" : "SD3DD"
+            "example" : "ARRIVAL",
+            "enum" : [ "ARRIVAL", "DEPARTURE", "STATION", "PORT", "HOURLY" ]
           },
           "startTime" : {
             "type" : "string",
@@ -2626,7 +2635,32 @@
               "$ref" : "#/components/schemas/transfers_units"
             }
           }
-        }
+        },
+        "oneOf" : [ {
+          "properties" : {
+            "transferType" : {
+              "type" : "string",
+              "enum" : [ "ARRIVAL", "DEPARTURE", "STATION", "PORT" ]
+            },
+            "serviceReference" : {
+              "type" : "string",
+              "description" : "For ARRIVAL, DEPARTURE, STATION, and PORT transfers, this should be a string value.",
+              "example" : "SD3DD"
+            }
+          }
+        }, {
+          "properties" : {
+            "transferType" : {
+              "type" : "string",
+              "enum" : [ "HOURLY" ]
+            },
+            "serviceReference" : {
+              "type" : "number",
+              "description" : "For HOURLY transfers, this should be a numeric value.",
+              "example" : 123
+            }
+          }
+        } ]
       },
       "AvailabilityCheck_dropoff" : {
         "type" : "object",
@@ -2654,7 +2688,8 @@
         "properties" : {
           "id" : {
             "type" : "string",
-            "example" : "ADULT"
+            "example" : "ADULT",
+            "enum" : [ "ADULT", "CHILD", "SENIOR" ]
           },
           "quantity" : {
             "type" : "integer",
@@ -2780,12 +2815,14 @@
           "type" : {
             "type" : "string",
             "description" : "The type of vehicle.",
-            "example" : "sedan"
+            "example" : "SEDAN",
+            "enum" : [ "SEDAN", "BOATS", "COACH", "LIMOUSINE", "MINIBUS", "MIDICOACH", "MINIVAN", "MPV", "PICKUP", "PREMIUM_SEDANS", "SPRINTER", "SUVS", "VAN", "BOAT" ]
           },
           "category" : {
             "type" : "string",
             "description" : "The category of the vehicle.",
-            "example" : "luxury"
+            "example" : "LUXURY",
+            "enum" : [ "STANDARD", "BUSINESS", "LUXURY" ]
           },
           "name" : {
             "type" : "string",
@@ -2805,7 +2842,8 @@
           "code" : {
             "type" : "string",
             "description" : "The currency code used for pricing.",
-            "example" : "USD"
+            "example" : "USD",
+            "enum" : [ "USD", "EUR", "GBP", "CHF", "DKK", "SEK", "NOK", "ISK", "AED" ]
           },
           "symbol" : {
             "type" : "string",
@@ -2897,13 +2935,15 @@
           },
           "type" : {
             "type" : "string",
-            "description" : "Type of vehicle (e.g., sedan, van).",
-            "example" : "sedan"
+            "description" : "Type of vehicle (e.g., SEDAN, VAN).",
+            "example" : "SEDAN",
+            "enum" : [ "SEDAN", "BOATS", "COACH", "LIMOUSINE", "MINIBUS", "MIDICOACH", "MINIVAN", "MPV", "PICKUP", "PREMIUM_SEDANS", "SPRINTER", "SUVS", "VAN", "BOAT" ]
           },
           "category" : {
             "type" : "string",
-            "description" : "Category of the vehicle (e.g., business, luxury).",
-            "example" : "business"
+            "description" : "Category of the vehicle (e.g., BUSINESS, LUXURY).",
+            "example" : "BUSINESS",
+            "enum" : [ "STANDARD", "BUSINESS", "LUXURY" ]
           },
           "name" : {
             "type" : "string",
@@ -3059,12 +3099,14 @@
           "type" : {
             "type" : "string",
             "description" : "Type of vehicle",
-            "example" : "sedan"
+            "example" : "SEDAN",
+            "enum" : [ "SEDAN", "BOATS", "COACH", "LIMOUSINE", "MINIBUS", "MIDICOACH", "MINIVA", "MPV", "PICKUP", "PREMIUM_SEDANS", "SPRINTER", "SUVS", "VAN", "BOAT" ]
           },
           "category" : {
             "type" : "string",
             "description" : "Category of vehicle",
-            "example" : "standard"
+            "example" : "STANDARD",
+            "enum" : [ "STANDARD", "BUSINESS", "LUXURY" ]
           },
           "name" : {
             "type" : "string",
