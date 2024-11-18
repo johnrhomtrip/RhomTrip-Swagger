@@ -395,6 +395,17 @@
         "description" : "Get full booking details for all bookings",
         "operationId" : "bookingsTransfer",
         "parameters" : [ {
+          "name" : "octo-capabilities",
+          "in" : "header",
+          "description" : "Comma-separated list of capabilities supported by the client.  Possible values are: - `octo/pricing`\n",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "octo/pricing"
+          }
+        }, {
           "name" : "page",
           "in" : "query",
           "description" : "Specifies the page number of the results to retrieve. This parameter is used to paginate the query results, allowing users to navigate between different pages of data.",
@@ -986,6 +997,18 @@
         "summary" : "Transfer Quotation",
         "description" : "This endpoint provides a quotation for a transfer service between two specified locations, based on transfer details such as pick-up, drop-off, type of transfer, and passenger information.",
         "operationId" : "getTransferQuote",
+        "parameters" : [ {
+          "name" : "octo-capabilities",
+          "in" : "header",
+          "description" : "Comma-separated list of capabilities supported by the client.  Possible values are: - `octo/pricing`\n",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "octo/pricing"
+          }
+        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -1667,11 +1690,6 @@
             "example" : "ARRIVAL",
             "enum" : [ "ARRIVAL", "DEPARTURE", "STATION", "PORT" ]
           },
-          "serviceReference" : {
-            "type" : "string",
-            "description" : "Service reference for the transfer.",
-            "example" : "SD3DD"
-          },
           "startTime" : {
             "type" : "string",
             "description" : "Start time of the transfer in HH:mm format.",
@@ -1703,7 +1721,32 @@
               "$ref" : "#/components/schemas/Transfer_options"
             }
           }
-        }
+        },
+        "oneOf" : [ {
+          "properties" : {
+            "transferType" : {
+              "type" : "string",
+              "enum" : [ "ARRIVAL", "DEPARTURE", "STATION", "PORT" ]
+            },
+            "serviceReference" : {
+              "type" : "string",
+              "description" : "For ARRIVAL, DEPARTURE, STATION, and PORT transfers, this should be a string value.",
+              "example" : "SD3DD"
+            }
+          }
+        }, {
+          "properties" : {
+            "transferType" : {
+              "type" : "string",
+              "enum" : [ "HOURLY" ]
+            },
+            "serviceReference" : {
+              "type" : "number",
+              "description" : "For HOURLY transfers, this should be a numeric value.",
+              "example" : 123
+            }
+          }
+        } ]
       },
       "TransferFullResponse" : {
         "required" : [ "distanceInclude", "distanceUnit", "dropOff", "options", "pickUp" ],
@@ -3180,6 +3223,20 @@
               "$ref" : "#/components/schemas/TransferFullResponse_cancellationPolicy"
             }
           }
+        }
+      }
+    },
+    "parameters" : {
+      "OctoCapabilities" : {
+        "name" : "octo-capabilities",
+        "in" : "header",
+        "description" : "Comma-separated list of capabilities supported by the client.  Possible values are: - `octo/pricing`\n",
+        "required" : false,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "example" : "octo/pricing"
         }
       }
     },
