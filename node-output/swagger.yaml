@@ -301,7 +301,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "PRICE"
+            "example" : "PRICE",
+            "enum" : [ "PRICE", "TRAVELER_RATING", "BEST_SELLERS" ]
           }
         }, {
           "name" : "order",
@@ -312,7 +313,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "DESCENDING"
+            "example" : "DESCENDING",
+            "enum" : [ "ASCENDING", "DESCENDING" ]
           }
         }, {
           "name" : "type",
@@ -323,7 +325,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "Product"
+            "example" : "PRODUCT",
+            "enum" : [ "TRANSFER", "PRODUCT" ]
           }
         } ],
         "responses" : {
@@ -422,7 +425,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "PRICE"
+            "example" : "PRICE",
+            "enum" : [ "PRICE", "TRAVELER_RATING", "BEST_SELLERS" ]
           }
         }, {
           "name" : "order",
@@ -433,7 +437,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "DESCENDING"
+            "example" : "DESCENDING",
+            "enum" : [ "ASCENDING", "DESCENDING" ]
           }
         }, {
           "name" : "type",
@@ -444,7 +449,8 @@
           "explode" : true,
           "schema" : {
             "type" : "string",
-            "example" : "Transfer"
+            "example" : "TRANSFER",
+            "enum" : [ "TRANSFER", "PRODUCT" ]
           }
         } ],
         "responses" : {
@@ -1213,7 +1219,7 @@
             "type" : "string",
             "description" : "Category of the product. Possible values are:\n- LUXURY: High-end transfer service offering premium vehicles and amenities\n- STANDARD: Basic transfer service providing standard vehicles and essential amenities\n- BUSINESS: Mid-tier transfer service with business-class vehicles and additional amenities.\n",
             "example" : "LUXURY",
-            "enum" : [ "STANDARD | BUSINESS | LUXURY" ]
+            "enum" : [ "STANDARD", "BUSINESS", "LUXURY" ]
           },
           "currency" : {
             "type" : "string",
@@ -1838,7 +1844,8 @@
           "order" : {
             "type" : "string",
             "description" : "Determines the order in which results are returned. Allowed values are 'Descending' for sorting results in descending order (from highest to lowest), and 'Ascending' for sorting results in ascending order (from lowest to highest).",
-            "example" : "ASCENDING"
+            "example" : "ASCENDING",
+            "enum" : [ "ASCENDING", "DESCENDING" ]
           }
         }
       },
@@ -1965,7 +1972,8 @@
           "id" : {
             "type" : "string",
             "description" : "The unit id.",
-            "example" : "ADULT"
+            "example" : "ADULT",
+            "enum" : [ "ADULT", "CHILD", "SENIOR" ]
           },
           "quantity" : {
             "type" : "integer",
@@ -2235,7 +2243,8 @@
           "type" : {
             "type" : "string",
             "description" : "The transfer type.",
-            "example" : "TRANSFER"
+            "example" : "TRANSFER",
+            "enum" : [ "TRANSFER", "PRODUCT" ]
           },
           "uuid" : {
             "description" : "A UUID used as an idempotency key when creating the booking.",
@@ -2585,7 +2594,8 @@
           "id" : {
             "type" : "string",
             "description" : "Unit type identifier (ADULT, CHILD, SENIOR)",
-            "example" : "ADULT"
+            "example" : "ADULT",
+            "enum" : [ "ADULT", "CHILD", "SENIOR" ]
           },
           "quantity" : {
             "type" : "integer",
@@ -2678,7 +2688,8 @@
         "properties" : {
           "id" : {
             "type" : "string",
-            "example" : "ADULT"
+            "example" : "ADULT",
+            "enum" : [ "ADULT", "CHILD", "SENIOR" ]
           },
           "quantity" : {
             "type" : "integer",
@@ -2805,13 +2816,13 @@
             "type" : "string",
             "description" : "The type of vehicle.",
             "example" : "SEDAN",
-            "enum" : [ "SEDAN | BOATS | COACH | LIMOUSINE | MINIBUS | MIDICOACH | MINIVAN | MPV | PICKUP | PREMIUM_SEDANS | SPRINTER | SUVS | VAN | BOAT" ]
+            "enum" : [ "SEDAN", "BOATS", "COACH", "LIMOUSINE", "MINIBUS", "MIDICOACH", "MINIVAN", "MPV", "PICKUP", "PREMIUM_SEDANS", "SPRINTER", "SUVS", "VAN", "BOAT" ]
           },
           "category" : {
             "type" : "string",
             "description" : "The category of the vehicle.",
             "example" : "LUXURY",
-            "enum" : [ "STANDARD | BUSINESS | LUXURY" ]
+            "enum" : [ "STANDARD", "BUSINESS", "LUXURY" ]
           },
           "name" : {
             "type" : "string",
@@ -2924,15 +2935,15 @@
           },
           "type" : {
             "type" : "string",
-            "description" : "Type of vehicle (e.g., sedan, van).",
+            "description" : "Type of vehicle (e.g., SEDAN, VAN).",
             "example" : "SEDAN",
-            "enum" : [ "SEDAN | BOATS | COACH | LIMOUSINE | MINIBUS | MIDICOACH | MINIVAN | MPV | PICKUP | PREMIUM_SEDANS | SPRINTER | SUVS | VAN | BOAT" ]
+            "enum" : [ "SEDAN", "BOATS", "COACH", "LIMOUSINE", "MINIBUS", "MIDICOACH", "MINIVAN", "MPV", "PICKUP", "PREMIUM_SEDANS", "SPRINTER", "SUVS", "VAN", "BOAT" ]
           },
           "category" : {
             "type" : "string",
             "description" : "Category of the vehicle (e.g., BUSINESS, LUXURY).",
             "example" : "BUSINESS",
-            "enum" : [ "STANDARD | BUSINESS | LUXURY" ]
+            "enum" : [ "STANDARD", "BUSINESS", "LUXURY" ]
           },
           "name" : {
             "type" : "string",
@@ -3089,13 +3100,13 @@
             "type" : "string",
             "description" : "Type of vehicle",
             "example" : "SEDAN",
-            "enum" : [ "SEDAN | BOATS | COACH | LIMOUSINE | MINIBUS | MIDICOACH | MINIVAN | MPV | PICKUP | PREMIUM_SEDANS | SPRINTER | SUVS | VAN | BOAT" ]
+            "enum" : [ "SEDAN", "BOATS", "COACH", "LIMOUSINE", "MINIBUS", "MIDICOACH", "MINIVA", "MPV", "PICKUP", "PREMIUM_SEDANS", "SPRINTER", "SUVS", "VAN", "BOAT" ]
           },
           "category" : {
             "type" : "string",
             "description" : "Category of vehicle",
             "example" : "STANDARD",
-            "enum" : [ "STANDARD | BUSINESS | LUXURY" ]
+            "enum" : [ "STANDARD", "BUSINESS", "LUXURY" ]
           },
           "name" : {
             "type" : "string",
