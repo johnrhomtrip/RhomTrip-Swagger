@@ -14,7 +14,7 @@
       "get" : {
         "tags" : [ "Products" ],
         "summary" : "Get Product by id",
-        "description" : "Get full product details for a single product.",
+        "description" : "Retrieve comprehensive details for a specific product.",
         "operationId" : "productbyid",
         "parameters" : [ {
           "name" : "id",
@@ -54,7 +54,7 @@
       "get" : {
         "tags" : [ "Products" ],
         "summary" : "Get Products",
-        "description" : "Get full product details for all products",
+        "description" : "Retrieve comprehensive details for all products.",
         "operationId" : "products",
         "parameters" : [ {
           "name" : "page",
@@ -186,7 +186,7 @@
       "post" : {
         "tags" : [ "Availability" ],
         "summary" : "Availability Check",
-        "description" : "Check real-time availability and pricing for a product depending on the date, pax-mix, start time and/or product option. - Note This service should only be used to determine the availability of a product immediately prior to booking. Bulk operations pertaining to product availability; e.g., generating a calendar of availability for a product, should use the availability schedule endpoints.",
+        "description" : "Checks real-time availability and pricing for a product based on date, passenger mix, start time, and/or product option. - Note This service should only be used to determine the availability of a product immediately prior to booking. Bulk operations pertaining to product availability; e.g., generating a calendar of availability for a product, should use the availability schedule endpoints.",
         "operationId" : "availabilityCheck",
         "requestBody" : {
           "content" : {
@@ -227,7 +227,7 @@
       "post" : {
         "tags" : [ "Availability" ],
         "summary" : "Availability Calendar",
-        "description" : "This endpoint checks the availability of a product within a specified date range. It determines if the product is available each day within the date range, starting at a specific time.",
+        "description" : "This endpoint checks a product's availability within a specified date range. It determines if the product is available each day within the date range, starting at a specific time.",
         "operationId" : "availabilityCalendar",
         "requestBody" : {
           "content" : {
@@ -1690,6 +1690,19 @@
             "example" : "ARRIVAL",
             "enum" : [ "ARRIVAL", "DEPARTURE", "STATION", "PORT" ]
           },
+          "serviceReference" : {
+            "description" : "- When `transferType` is `HOURLY`, this must be an integer.\n- When `transferType` is any other value, this must be a string.\n",
+            "oneOf" : [ {
+              "type" : "string",
+              "description" : "Must be a string when `transferType` is diferent to `HOURLY`",
+              "example" : "Flight-456"
+            }, {
+              "type" : "number",
+              "description" : "Must be a integer when `transferType` is `HOURLY`",
+              "example" : 123,
+              "default" : 0
+            } ]
+          },
           "startTime" : {
             "type" : "string",
             "description" : "Start time of the transfer in HH:mm format.",
@@ -1721,32 +1734,7 @@
               "$ref" : "#/components/schemas/Transfer_options"
             }
           }
-        },
-        "oneOf" : [ {
-          "properties" : {
-            "transferType" : {
-              "type" : "string",
-              "enum" : [ "ARRIVAL", "DEPARTURE", "STATION", "PORT" ]
-            },
-            "serviceReference" : {
-              "type" : "string",
-              "description" : "For ARRIVAL, DEPARTURE, STATION, and PORT transfers, this should be a string value.",
-              "example" : "SD3DD"
-            }
-          }
-        }, {
-          "properties" : {
-            "transferType" : {
-              "type" : "string",
-              "enum" : [ "HOURLY" ]
-            },
-            "serviceReference" : {
-              "type" : "number",
-              "description" : "For HOURLY transfers, this should be a numeric value.",
-              "example" : 123
-            }
-          }
-        } ]
+        }
       },
       "TransferFullResponse" : {
         "required" : [ "distanceInclude", "distanceUnit", "dropOff", "options", "pickUp" ],
@@ -2662,6 +2650,19 @@
             "example" : "ARRIVAL",
             "enum" : [ "ARRIVAL", "DEPARTURE", "STATION", "PORT", "HOURLY" ]
           },
+          "serviceReference" : {
+            "description" : "- When `transferType` is `HOURLY`, this must be an integer.\n- When `transferType` is any other value, this must be a string.\n",
+            "oneOf" : [ {
+              "type" : "string",
+              "description" : "Must be a string when `transferType` is diferent to `HOURLY`",
+              "example" : "Flight-456"
+            }, {
+              "type" : "number",
+              "description" : "Must be a integer when `transferType` is `HOURLY`",
+              "example" : 123,
+              "default" : 0
+            } ]
+          },
           "startTime" : {
             "type" : "string",
             "description" : "Specifies the start time of the transfer in HH:mm format (24-hour format)",
@@ -2678,32 +2679,7 @@
               "$ref" : "#/components/schemas/transfers_units"
             }
           }
-        },
-        "oneOf" : [ {
-          "properties" : {
-            "transferType" : {
-              "type" : "string",
-              "enum" : [ "ARRIVAL", "DEPARTURE", "STATION", "PORT" ]
-            },
-            "serviceReference" : {
-              "type" : "string",
-              "description" : "For ARRIVAL, DEPARTURE, STATION, and PORT transfers, this should be a string value.",
-              "example" : "SD3DD"
-            }
-          }
-        }, {
-          "properties" : {
-            "transferType" : {
-              "type" : "string",
-              "enum" : [ "HOURLY" ]
-            },
-            "serviceReference" : {
-              "type" : "number",
-              "description" : "For HOURLY transfers, this should be a numeric value.",
-              "example" : 123
-            }
-          }
-        } ]
+        }
       },
       "AvailabilityCheck_dropoff" : {
         "type" : "object",
