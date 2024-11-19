@@ -1441,7 +1441,8 @@
           "status" : {
             "type" : "string",
             "description" : "The status of that date. Possible values are:\n- AVAILABLE: This availability is available for sale\n- FREESALE: This availability has no capacity and is available.\n- SOLD_OUT: There are no more spots available for this date.\n",
-            "example" : "AVAILABLE"
+            "example" : "AVAILABLE",
+            "enum" : [ "AVAILABLE", "FREESALE", "SOLD_OUT" ]
           },
           "available" : {
             "type" : "boolean",
@@ -1530,7 +1531,8 @@
           "status" : {
             "type" : "string",
             "description" : "The status of the booking, possible values are:\n- ON_HOLD: The booking is pending confirmation, this is the default value when you first create the booking.\n- EXPIRED: If the booking is not confirmed before the expiration hold expires, it goes into an expired state.\n- CONFIRMED: Once the confirmation call is made the booking is ready to be used.\n- CANCELLED: If the booking is cancelled.\n- PENDING: If the booking is pending outside availability confirmation.\n- REDEEMED: If the booking is already redeemed.\n",
-            "example" : "ON_HOLD"
+            "example" : "ON_HOLD",
+            "enum" : [ "ON_HOLD", "EXPIRED", "CONFIRMED", "CANCELLED", "PENDING", "REDEEMED" ]
           },
           "utcCreatedAt" : {
             "type" : "string",
@@ -1615,7 +1617,8 @@
           "status" : {
             "type" : "string",
             "description" : "The status of the booking, possible values are:\n- ON_HOLD: The booking is pending confirmation, this is the default value when you first create the booking.\n- EXPIRED: If the booking is not confirmed before the expiration hold expires, it goes into an expired state.\n- CONFIRMED: Once the confirmation call is made the booking is ready to be used.\n- CANCELLED: If the booking is cancelled.\n- PENDING: If the booking is pending outside availability confirmation.\n- REDEEMED: If the booking is already redeemed.\n",
-            "example" : "ON_HOLD"
+            "example" : "ON_HOLD",
+            "enum" : [ "ON_HOLD", "EXPIRED", "CONFIRMED", "CANCELLED", "PENDING", "REDEEMED" ]
           },
           "utcCreatedAt" : {
             "type" : "string",
@@ -1744,7 +1747,42 @@
             "$ref" : "#/components/schemas/TransferFullResponse_pickUp"
           },
           "dropOff" : {
-            "$ref" : "#/components/schemas/TransferFullResponse_dropOff"
+            "description" : "- When `transferType` is any other value, this must be an object.\n- When `transferType` is `HOURLY`, this must be NULL.\n",
+            "oneOf" : [ {
+              "type" : "object",
+              "properties" : {
+                "name" : {
+                  "type" : "string",
+                  "description" : "Name of the drop-off location",
+                  "example" : "Alexandra Barcelona Hotel, Curio Collection by Hilton"
+                },
+                "googlePlaceId" : {
+                  "type" : "string",
+                  "description" : "Google Places ID for the drop-off location",
+                  "nullable" : true
+                },
+                "latitude" : {
+                  "type" : "number",
+                  "description" : "Latitude of the drop-off location",
+                  "example" : 41.3932199
+                },
+                "longitude" : {
+                  "type" : "number",
+                  "description" : "Longitude of the drop-off location",
+                  "example" : 2.1589192
+                },
+                "country" : {
+                  "type" : "string",
+                  "description" : "Country of the drop-off location in ISO alpha-2 format",
+                  "example" : "ES"
+                }
+              }
+            }, {
+              "not" : {
+                "type" : "object"
+              },
+              "description" : "Allows null (indicating no value provided)"
+            } ]
           },
           "distanceUnit" : {
             "type" : "string",
@@ -1777,7 +1815,8 @@
           "status" : {
             "type" : "string",
             "description" : "Status of the quotation",
-            "example" : "AVAILABLE"
+            "example" : "AVAILABLE",
+            "enum" : [ "AVAILABLE", "EXPIRED" ]
           },
           "id" : {
             "type" : "string",
@@ -2589,36 +2628,6 @@
           }
         }
       },
-      "transfers_dropOff" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string",
-            "description" : "Name of the drop-off location",
-            "example" : "Alexandra Barcelona Hotel, Curio Collection by Hilton"
-          },
-          "googlePlaceId" : {
-            "type" : "string",
-            "description" : "Google Places ID for the drop-off location",
-            "nullable" : true
-          },
-          "latitude" : {
-            "type" : "number",
-            "description" : "Latitude of the drop-off location",
-            "example" : 41.3932199
-          },
-          "longitude" : {
-            "type" : "number",
-            "description" : "Longitude of the drop-off location",
-            "example" : 2.1589192
-          },
-          "country" : {
-            "type" : "string",
-            "description" : "Country of the drop-off location in ISO alpha-2 format",
-            "example" : "ES"
-          }
-        }
-      },
       "transfers_units" : {
         "type" : "object",
         "properties" : {
@@ -2642,7 +2651,42 @@
             "$ref" : "#/components/schemas/transfers_pickUp"
           },
           "dropOff" : {
-            "$ref" : "#/components/schemas/transfers_dropOff"
+            "description" : "- When `transferType` is any other value, this must be an object.\n- When `transferType` is `HOURLY`, this must be NULL.\n",
+            "oneOf" : [ {
+              "type" : "object",
+              "properties" : {
+                "name" : {
+                  "type" : "string",
+                  "description" : "Name of the drop-off location",
+                  "example" : "Alexandra Barcelona Hotel, Curio Collection by Hilton"
+                },
+                "googlePlaceId" : {
+                  "type" : "string",
+                  "description" : "Google Places ID for the drop-off location",
+                  "nullable" : true
+                },
+                "latitude" : {
+                  "type" : "number",
+                  "description" : "Latitude of the drop-off location",
+                  "example" : 41.3932199
+                },
+                "longitude" : {
+                  "type" : "number",
+                  "description" : "Longitude of the drop-off location",
+                  "example" : 2.1589192
+                },
+                "country" : {
+                  "type" : "string",
+                  "description" : "Country of the drop-off location in ISO alpha-2 format",
+                  "example" : "ES"
+                }
+              }
+            }, {
+              "not" : {
+                "type" : "object"
+              },
+              "description" : "Allows null (indicating no value provided)"
+            } ]
           },
           "transferType" : {
             "type" : "string",
@@ -3068,36 +3112,6 @@
           "country" : {
             "type" : "string",
             "description" : "Country of the pick-up location in format ISO alpha-2",
-            "example" : "ES"
-          }
-        }
-      },
-      "TransferFullResponse_dropOff" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string",
-            "description" : "Name of the drop-off location",
-            "example" : "Alexandra Barcelona Hotel, Curio Collection by Hilton"
-          },
-          "googlePlaceId" : {
-            "type" : "string",
-            "description" : "Google Place ID of the drop-off location",
-            "nullable" : true
-          },
-          "latitude" : {
-            "type" : "number",
-            "description" : "Latitude of the drop-off location",
-            "example" : 41.3932199
-          },
-          "longitude" : {
-            "type" : "number",
-            "description" : "Longitude of the drop-off location",
-            "example" : 2.1589192
-          },
-          "country" : {
-            "type" : "string",
-            "description" : "Country of the drop-off location in format ISO alpha-2",
             "example" : "ES"
           }
         }
