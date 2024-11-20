@@ -3064,35 +3064,6 @@
           "vehicle" : {
             "$ref" : "#/components/schemas/Transfer_vehicle"
           },
-          "defaultCurrency" : {
-            "description" : "- When `octo-cabability` is defined, this must be a string.\n- When `octo-cabalitily` is NOT defined, this must be NULL.\n",
-            "oneOf" : [ {
-              "type" : "string",
-              "description" : "Default currency code",
-              "example" : "EUR"
-            }, {
-              "not" : {
-                "type" : "object"
-              },
-              "description" : "Allows null (indicating no value provided)"
-            } ]
-          },
-          "availableCurrencies" : {
-            "description" : "- When `octo-cabability` is defined, this must be an array.\n- When `octo-cabalitily` is NOT defined, this must be NULL.\n",
-            "oneOf" : [ {
-              "type" : "array",
-              "description" : "Available currencies.",
-              "example" : [ "USD", "EUR", "GBP" ],
-              "items" : {
-                "type" : "string"
-              }
-            }, {
-              "not" : {
-                "type" : "object"
-              },
-              "description" : "Allows null (indicating no value provided)"
-            } ]
-          },
           "cancellationPolicy" : {
             "type" : "array",
             "description" : "List of cancellation policies for the transfer option.",
@@ -3209,35 +3180,6 @@
           },
           "vehicle" : {
             "$ref" : "#/components/schemas/TransferFullResponse_vehicle"
-          },
-          "defaultCurrency" : {
-            "description" : "- When `octo-cabability` is defined, this must be a string.\n- When `octo-cabalitily` is NOT defined, this must be NULL.\n",
-            "oneOf" : [ {
-              "type" : "string",
-              "description" : "Default currency code",
-              "example" : "EUR"
-            }, {
-              "not" : {
-                "type" : "object"
-              },
-              "description" : "Allows null (indicating no value provided)"
-            } ]
-          },
-          "availableCurrencies" : {
-            "description" : "- When `octo-cabability` is defined, this must be an array.\n- When `octo-cabalitily` is NOT defined, this must be NULL.\n",
-            "oneOf" : [ {
-              "type" : "array",
-              "description" : "Available currencies.",
-              "example" : [ "USD", "EUR", "GBP" ],
-              "items" : {
-                "type" : "string"
-              }
-            }, {
-              "not" : {
-                "type" : "object"
-              },
-              "description" : "Allows null (indicating no value provided)"
-            } ]
           },
           "cancellationPolicy" : {
             "type" : "array",
