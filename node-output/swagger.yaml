@@ -1463,9 +1463,6 @@
             "type" : "string",
             "description" : "Start time of the product option on the specified date (format HH MM)",
             "example" : "14:00"
-          },
-          "pricing" : {
-            "$ref" : "#/components/schemas/PricingType"
           }
         }
       },
